@@ -16,9 +16,9 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
 
   // patientId: string | null = null;
   patientId = '67457849dc74504f172751f9';
-  periodontalChart: PeriodontalChart | undefined
+  periodontalChart: PeriodontalChart | undefined;
 
-  constructor(private _periodontalChartService: PeriodontalChartService){
+  constructor(private _periodontalChartService: PeriodontalChartService) {
     super();
   }
   ngOnInit(): void {
@@ -28,26 +28,26 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
 
 
 
-  getPatientChart(){
+  getPatientChart() {
     this.patientId = '67457849dc74504f172751f9';
-    if(this.patientId)
-    this._periodontalChartService.getChartsByPatientId(this.patientId).pipe((takeUntil(this.destroy$) , finalize(()=>{
-    }))).subscribe({
-      next: (response: PeriodontalChart) => {
-        this.periodontalChart = response;
-        console.log(this.periodontalChart);
-      },
-      error: (err) => {
-        
-      },
-      
-    })
-  }
- 
+    if (this.patientId)
+      this._periodontalChartService.getChartsByPatientId(this.patientId).pipe((takeUntil(this.destroy$), finalize(() => {
+      }))).subscribe({
+        next: (response: PeriodontalChart) => {
+          this.periodontalChart = response;
+          console.log(this.periodontalChart);
+        },
+        error: (err) => {
+
+        },
+
+      })
   }
 
+}
 
 
 
-  
+
+
 
