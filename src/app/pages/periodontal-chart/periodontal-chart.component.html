@@ -1,0 +1,10 @@
+<!-- src/app/components/speech.component.html -->
+<div>
+  <h2>Speech Recognition</h2>
+  <button (click)="toggleRecording()" [ngClass]="{'recording': isRecording}">
+    <i class="fa" [ngClass]="isRecording ? 'fa-stop' : 'fa-microphone'"></i>
+    {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
+  </button>
+  <h3>Transcript:</h3>
+  <p>{{ transcript }}</p>
+</div>

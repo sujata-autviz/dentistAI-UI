@@ -20,7 +20,7 @@ export class PeriodontalChartService {
 
   // Get charts by patient ID
   getChartsByPatientId(patientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetChartsByPatientId/${patientId}`);
+    return this.http.get(`${this.apiUrl}/GetChartsByPatientId/${patientId}`); // Call the GetChartsByPatientId endpoint
   }
 
   // Add a new chart
@@ -42,4 +42,6 @@ export class PeriodontalChartService {
   addOrUpdateTeeth(patientId: string, teeth: Tooth[]): Observable<any> {
     return this.http.post(`${this.apiUrl}/AddOrUpdateTeeth/${patientId}`, teeth);
   }
+
+  
 }
