@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseDestroyCompoent } from '../../shared/utils/basedestroy';
 import { PeriodontalChartService } from '../../core/services/periodontal-chart.service';
 import { finalize, takeUntil } from 'rxjs';
@@ -39,7 +39,8 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   mgjValues: MucogingivalJunction[] = [];
   constructor(private _periodontalChartService: PeriodontalChartService,
     private speechService: SpeechRecognitionService,
-    private notificationService: NotificationsService
+    private notificationService: NotificationsService,
+    private cdr : ChangeDetectorRef
   ) {
     super();
   }
@@ -292,7 +293,7 @@ generateMgjValues() {
         
         this.calValues[calIndex].clinicalAttachmentLevelLingualRight =
           (pdValue.pocketDepthLingualRight ?? 0) + (gmValue.gingivalMarginLingualRight ?? 0);
-        
+        this.cdr.detectChanges();
         console.log(`Updated CAL for Tooth Number ${toothNumber}:`, this.calValues[calIndex]);
       } else {
         // If the PD or GM value is not found, log a warning message
@@ -392,7 +393,9 @@ saveChart() {
       this.speechService.startVoiceRecognition(request).subscribe(
         response => {
           if (response.success) {
-            this.transcript = response.transcript; // Store the transcript
+            this.transcript = response.transcript; 
+            // Store the transcript
+            console.log('Transcript:', this.transcript);
             this.processTranscript(this.transcript);
             this.isRecording = false; // Process the transcript
           } else {
