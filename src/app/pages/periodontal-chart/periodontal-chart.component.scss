@@ -11,7 +11,6 @@
 }
 
 .nav_menu {
-
   a {
     padding-bottom: 16px;
     border-bottom: 1px solid transparent;
@@ -26,17 +25,42 @@
   }
 }
 
+// mobile menu
+@media screen and (max-width:1024px) {
+  .mobile-menu {
+    transform: translateX(100%);
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 1rem;
+    background: #fff;
+    z-index: 99;
+    transition: all .4s ease-in-out;
+
+  }
+
+  .showMenu {
+    transform: translateX(0%) !important;
+
+  }
+}
+
 // table UI
 
 .chartTable-cutsom {
-  font-weight: normal;
-  width: 100%;
+  // font-weight: normal;
+  // width: 100%;
 
   thead tr th {
-    // position: sticky;
-    // top: 0
+    position: sticky;
+    top: 0;
+    z-index: 101;
     font-weight: normal;
     padding: 24px;
+    background-color: #fff;
+    // width: 140px;
   }
 
   tbody tr td {
@@ -239,4 +263,43 @@
       background: #1E1E1E;
     }
   }
+}
+
+.align-td-row {
+  display: inline;
+  text-align: center;
+  white-space: nowrap;
+
+  input {
+    width: 40px;
+    display: inline;
+    text-align: center;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus-visible {
+      outline: none !important;
+      border: 0 !important;
+    }
+
+    &:disabled {
+      background-color: transparent !important;
+      color: #747474;
+    }
+
+    &:enabled {
+      border: 1px solid #eee !important;
+    }
+  }
+}
+
+
+.animated-recording {
+  width: 20px;
+  height: 20px;
+  color: #1E1E1E;
 }
