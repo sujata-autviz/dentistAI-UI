@@ -13,7 +13,7 @@ import { NotificationsService } from '../../core/services/notifications.service'
 @Component({
   selector: 'app-periodontal-chart',
   standalone: true,
-  imports: [CommonModule , FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './periodontal-chart.component.html',
   styleUrl: './periodontal-chart.component.scss'
 })
@@ -22,13 +22,14 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   // patientId: string | null = null;
   patientId = '6745601e5e34594ff9d75afb';
   periodontalChart: PeriodontalChart | undefined
-  charts: PeriodontalChartDto[] = []; 
+  charts: PeriodontalChartDto[] = [];
   tenantId: string = ''; // Initialize with appropriate value
-  chartId: string = ''; 
+  chartId: string = '';
   teeth: Tooth[] = []; //
   transcript: string = '';
-  transcripts: string[] = []; 
+  transcripts: string[] = [];
   isRecording: boolean = false;
+  menuShow: boolean = false;
 
   pdValues: PocketDepth[] = [];
   gmValues: GingivalMargin[] = [];
@@ -37,9 +38,9 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   suppurationValues: Suppuration[] = [];
   mgjValues: MucogingivalJunction[] = [];
   constructor(private _periodontalChartService: PeriodontalChartService,
-    private speechService : SpeechRecognitionService,
-    private notificationService : NotificationsService
-  ){
+    private speechService: SpeechRecognitionService,
+    private notificationService: NotificationsService
+  ) {
     super();
   }
   ngOnInit(): void {
@@ -66,7 +67,13 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
         pocketDepthLingualRight: 0,
       });
     }
-    
+
+  }
+
+  // show menu
+  showMenu() {
+    this.menuShow = !this.menuShow;
+    console.log(this.menuShow);
   }
 
   // Generate Gingival Margin Values
@@ -148,22 +155,22 @@ generateMgjValues() {
   }
 }
 
-  getPatientChart(){
-  
-    if(this.patientId)
+  getPatientChart() {
+
+    if (this.patientId)
       this._periodontalChartService.getChartsByPatientId(this.patientId).subscribe(
         response => {
           if (response.success) {
             this.charts = response.charts;
             this.chartId = response.charts[0].id;
-            this.tenantId = response.charts[0].tenantId 
+            this.tenantId = response.charts[0].tenantId
             this.updateValuesFromCharts();
           } else {
           }
         },
         error => {
           console.error('Error fetching charts:', error);
-        
+
         }
       );
     }
@@ -302,72 +309,72 @@ saveChart() {
     const suppuration = this.suppurationValues.find(item => item.toothNumber === pd.toothNumber);
     const mgj = this.mgjValues.find(item => item.toothNumber === pd.toothNumber);
 
-    return {
-      hasImplant : false,
-      isMissingTooth : false,
-      tenantId : this.tenantId,
-      chartId : this.chartId,
-      toothNumber: pd.toothNumber,
-      notes :"",
-      mobilityGrade : pd.mobilityGrade,
-      pocketDepthBuccalLeft: pd.pocketDepthBuccalLeft,
-      pocketDepthBuccalCenter: pd.pocketDepthBuccalCenter,
-      pocketDepthBuccalRight: pd.pocketDepthBuccalRight,
-      pocketDepthLingualLeft: pd.pocketDepthLingualLeft,
-      pocketDepthLingualCenter: pd.pocketDepthLingualCenter,
-      pocketDepthLingualRight: pd.pocketDepthLingualRight,
+      return {
+        hasImplant: false,
+        isMissingTooth: false,
+        tenantId: this.tenantId,
+        chartId: this.chartId,
+        toothNumber: pd.toothNumber,
+        notes: "",
+        mobilityGrade: pd.mobilityGrade,
+        pocketDepthBuccalLeft: pd.pocketDepthBuccalLeft,
+        pocketDepthBuccalCenter: pd.pocketDepthBuccalCenter,
+        pocketDepthBuccalRight: pd.pocketDepthBuccalRight,
+        pocketDepthLingualLeft: pd.pocketDepthLingualLeft,
+        pocketDepthLingualCenter: pd.pocketDepthLingualCenter,
+        pocketDepthLingualRight: pd.pocketDepthLingualRight,
 
-      gingivalMarginBuccalLeft: gm?.gingivalMarginBuccalLeft || 0,
-      gingivalMarginBuccalCenter: gm?.gingivalMarginBuccalCenter || 0,
-      gingivalMarginBuccalRight: gm?.gingivalMarginBuccalRight || 0,
-      gingivalMarginLingualLeft: gm?.gingivalMarginLingualLeft || 0,
-      gingivalMarginLingualCenter: gm?.gingivalMarginLingualCenter || 0,
-      gingivalMarginLingualRight: gm?.gingivalMarginLingualRight || 0,
+        gingivalMarginBuccalLeft: gm?.gingivalMarginBuccalLeft || 0,
+        gingivalMarginBuccalCenter: gm?.gingivalMarginBuccalCenter || 0,
+        gingivalMarginBuccalRight: gm?.gingivalMarginBuccalRight || 0,
+        gingivalMarginLingualLeft: gm?.gingivalMarginLingualLeft || 0,
+        gingivalMarginLingualCenter: gm?.gingivalMarginLingualCenter || 0,
+        gingivalMarginLingualRight: gm?.gingivalMarginLingualRight || 0,
 
-      clinicalAttachmentLevelBuccalLeft: cal?.clinicalAttachmentLevelBuccalLeft || 0,
-      clinicalAttachmentLevelBuccalCenter: cal?.clinicalAttachmentLevelBuccalCenter || 0,
-      clinicalAttachmentLevelBuccalRight: cal?.clinicalAttachmentLevelBuccalRight || 0,
-      clinicalAttachmentLevelLingualLeft: cal?.clinicalAttachmentLevelLingualLeft || 0,
-      clinicalAttachmentLevelLingualCenter: cal?.clinicalAttachmentLevelLingualCenter || 0,
-      clinicalAttachmentLevelLingualRight: cal?.clinicalAttachmentLevelLingualRight || 0,
+        clinicalAttachmentLevelBuccalLeft: cal?.clinicalAttachmentLevelBuccalLeft || 0,
+        clinicalAttachmentLevelBuccalCenter: cal?.clinicalAttachmentLevelBuccalCenter || 0,
+        clinicalAttachmentLevelBuccalRight: cal?.clinicalAttachmentLevelBuccalRight || 0,
+        clinicalAttachmentLevelLingualLeft: cal?.clinicalAttachmentLevelLingualLeft || 0,
+        clinicalAttachmentLevelLingualCenter: cal?.clinicalAttachmentLevelLingualCenter || 0,
+        clinicalAttachmentLevelLingualRight: cal?.clinicalAttachmentLevelLingualRight || 0,
 
-      isBleedingBuccalLeft: bleeding?.isBleedingBuccalLeft || false,
-      isBleedingBuccalCenter: bleeding?.isBleedingBuccalCenter || false,
-      isBleedingBuccalRight: bleeding?.isBleedingBuccalRight || false,
-      isBleedingLingualLeft: bleeding?.isBleedingLingualLeft || false,
-      isBleedingLingualCenter: bleeding?.isBleedingLingualCenter || false,
-      isBleedingLingualRight: bleeding?.isBleedingLingualRight || false,
+        isBleedingBuccalLeft: bleeding?.isBleedingBuccalLeft || false,
+        isBleedingBuccalCenter: bleeding?.isBleedingBuccalCenter || false,
+        isBleedingBuccalRight: bleeding?.isBleedingBuccalRight || false,
+        isBleedingLingualLeft: bleeding?.isBleedingLingualLeft || false,
+        isBleedingLingualCenter: bleeding?.isBleedingLingualCenter || false,
+        isBleedingLingualRight: bleeding?.isBleedingLingualRight || false,
 
-      isSuppurationBuccalLeft: suppuration?.isSuppurationBuccalLeft || false,
-      isSuppurationBuccalCenter: suppuration?.isSuppurationBuccalCenter || false,
-      isSuppurationBuccalRight: suppuration?.isSuppurationBuccalRight || false,
-      isSuppurationLingualLeft: suppuration?.isSuppurationLingualLeft || false,
-      isSuppurationLingualCenter: suppuration?.isSuppurationLingualCenter || false,
-      isSuppurationLingualRight: suppuration?.isSuppurationLingualRight || false,
+        isSuppurationBuccalLeft: suppuration?.isSuppurationBuccalLeft || false,
+        isSuppurationBuccalCenter: suppuration?.isSuppurationBuccalCenter || false,
+        isSuppurationBuccalRight: suppuration?.isSuppurationBuccalRight || false,
+        isSuppurationLingualLeft: suppuration?.isSuppurationLingualLeft || false,
+        isSuppurationLingualCenter: suppuration?.isSuppurationLingualCenter || false,
+        isSuppurationLingualRight: suppuration?.isSuppurationLingualRight || false,
 
-      mucogingivalJunctionBuccalLeft: mgj?.mucogingivalJunctionBuccalLeft || 0,
-      mucogingivalJunctionBuccalCenter: mgj?.mucogingivalJunctionBuccalCenter || 0,
-      mucogingivalJunctionBuccalRight: mgj?.mucogingivalJunctionBuccalRight || 0,
-      mucogingivalJunctionLingualLeft: mgj?.mucogingivalJunctionLingualLeft || 0,
-      mucogingivalJunctionLingualCenter: mgj?.mucogingivalJunctionLingualCenter || 0,
-      mucogingivalJunctionLingualRight: mgj?.mucogingivalJunctionLingualRight || 0,
-    };
-  });
-
-  this._periodontalChartService.addOrUpdateTeeth(this.patientId, this.teeth)
-    .subscribe(response => {
-      if (response.success) {
-        this.notificationService.successAlert('Chart saved successfully!')
-        console.log('Chart saved successfully!');
-      }
-    }, error => {
-      console.error('Error saving chart:', error);
+        mucogingivalJunctionBuccalLeft: mgj?.mucogingivalJunctionBuccalLeft || 0,
+        mucogingivalJunctionBuccalCenter: mgj?.mucogingivalJunctionBuccalCenter || 0,
+        mucogingivalJunctionBuccalRight: mgj?.mucogingivalJunctionBuccalRight || 0,
+        mucogingivalJunctionLingualLeft: mgj?.mucogingivalJunctionLingualLeft || 0,
+        mucogingivalJunctionLingualCenter: mgj?.mucogingivalJunctionLingualCenter || 0,
+        mucogingivalJunctionLingualRight: mgj?.mucogingivalJunctionLingualRight || 0,
+      };
     });
-}
+
+    this._periodontalChartService.addOrUpdateTeeth(this.patientId, this.teeth)
+      .subscribe(response => {
+        if (response.success) {
+          this.notificationService.successAlert('Chart saved successfully!')
+          console.log('Chart saved successfully!');
+        }
+      }, error => {
+        console.error('Error saving chart:', error);
+      });
+  }
 
   toggleRecording() {
     if (this.isRecording) {
-     // this.stopRecording();
+      // this.stopRecording();
     } else {
       this.startRecognition();
     }
@@ -404,87 +411,87 @@ saveChart() {
   processTranscript(transcript: string) {
     const lines = transcript.split(','); // Split by commas for multiple entries
     for (const line of lines) {
-        const toothMatch = line.match(/tooth (\d+)/i);
-        if (toothMatch) {
-            const toothNumber = parseInt(toothMatch[1], 10);
-            const tooth: Tooth = {
-                tenantId: this.tenantId,
-                chartId: this.chartId,
-                toothNumber,
-                isMissingTooth: false,
-                hasImplant: false,
-                isBleedingBuccalLeft: false,
-                isBleedingBuccalCenter: false,
-                isBleedingBuccalRight: false,
-                isBleedingLingualLeft: false,
-                isBleedingLingualCenter: false,
-                isBleedingLingualRight: false,
-                isSuppurationBuccalLeft: false,
-                isSuppurationBuccalCenter: false,
-                isSuppurationBuccalRight: false,
-                isSuppurationLingualLeft: false,
-                isSuppurationLingualCenter: false,
-                isSuppurationLingualRight: false,
-            };
+      const toothMatch = line.match(/tooth (\d+)/i);
+      if (toothMatch) {
+        const toothNumber = parseInt(toothMatch[1], 10);
+        const tooth: Tooth = {
+          tenantId: this.tenantId,
+          chartId: this.chartId,
+          toothNumber,
+          isMissingTooth: false,
+          hasImplant: false,
+          isBleedingBuccalLeft: false,
+          isBleedingBuccalCenter: false,
+          isBleedingBuccalRight: false,
+          isBleedingLingualLeft: false,
+          isBleedingLingualCenter: false,
+          isBleedingLingualRight: false,
+          isSuppurationBuccalLeft: false,
+          isSuppurationBuccalCenter: false,
+          isSuppurationBuccalRight: false,
+          isSuppurationLingualLeft: false,
+          isSuppurationLingualCenter: false,
+          isSuppurationLingualRight: false,
+        };
 
-            // Check for mobility
-            const mobilityMatch = line.match(/mobility (\d+)/i);
-            if (mobilityMatch) {
-                tooth.mobilityGrade = parseInt(mobilityMatch[1], 10);
-            }
-
-            // Check for pocket depth
-            const pdMatch = line.match(/(?:pocket depth|pd) buccal (\d+) (\d+) (\d+)/i);
-            if (pdMatch) {
-                tooth.pocketDepthBuccalLeft = parseInt(pdMatch[1], 10);
-                tooth.pocketDepthBuccalCenter = parseInt(pdMatch[2], 10);
-                tooth.pocketDepthBuccalRight = parseInt(pdMatch[3], 10);
-            }
-
-            const pdLingualMatch = line.match(/(?:pocket depth|pd) lingual (\d+) (\d+) (\d+)/i);
-            if (pdLingualMatch) {
-                tooth.pocketDepthLingualLeft = parseInt(pdLingualMatch[1], 10);
-                tooth.pocketDepthLingualCenter = parseInt(pdLingualMatch[2], 10);
-                tooth.pocketDepthLingualRight = parseInt(pdLingualMatch[3], 10);
-            }
-
-            // Check for clinical attachment level
-            const calMatch = line.match(/(?:clinical attachment level|cal) buccal (\d+) (\d+) (\d+)/i);
-            if (calMatch) {
-                tooth.clinicalAttachmentLevelBuccalLeft = parseInt(calMatch[1], 10);
-                tooth.clinicalAttachmentLevelBuccalCenter = parseInt(calMatch[2], 10);
-                tooth.clinicalAttachmentLevelBuccalRight = parseInt(calMatch[3], 10);
-            }
-
-            const calLingualMatch = line.match(/(?:clinical attachment level|cal) lingual (\d+) (\d+) (\d+)/i);
-            if (calLingualMatch) {
-                tooth.clinicalAttachmentLevelLingualLeft = parseInt(calLingualMatch[1], 10);
-                tooth.clinicalAttachmentLevelLingualCenter = parseInt(calLingualMatch[2], 10);
-                tooth.clinicalAttachmentLevelLingualRight = parseInt(calLingualMatch[3], 10);
-            }
-
-            // Check for bleeding
-            if (line.includes('bleeding')) {
-                tooth.isBleedingBuccalLeft = true;
-                tooth.isBleedingBuccalCenter = true;
-                tooth.isBleedingBuccalRight = true;
-                tooth.isBleedingLingualLeft = true;
-                tooth.isBleedingLingualCenter = true;
-                tooth.isBleedingLingualRight = true;
-            }
-
-            // Add or update the tooth in the teeth array
-            const existingToothIndex = this.teeth.findIndex(t => t.toothNumber === toothNumber);
-            if (existingToothIndex > -1) {
-                this.teeth[existingToothIndex] = { ...this.teeth[existingToothIndex], ...tooth }; // Update existing tooth
-            } else {
-                this.teeth.push(tooth); // Add new tooth
-            }
+        // Check for mobility
+        const mobilityMatch = line.match(/mobility (\d+)/i);
+        if (mobilityMatch) {
+          tooth.mobilityGrade = parseInt(mobilityMatch[1], 10);
         }
+
+        // Check for pocket depth
+        const pdMatch = line.match(/(?:pocket depth|pd) buccal (\d+) (\d+) (\d+)/i);
+        if (pdMatch) {
+          tooth.pocketDepthBuccalLeft = parseInt(pdMatch[1], 10);
+          tooth.pocketDepthBuccalCenter = parseInt(pdMatch[2], 10);
+          tooth.pocketDepthBuccalRight = parseInt(pdMatch[3], 10);
+        }
+
+        const pdLingualMatch = line.match(/(?:pocket depth|pd) lingual (\d+) (\d+) (\d+)/i);
+        if (pdLingualMatch) {
+          tooth.pocketDepthLingualLeft = parseInt(pdLingualMatch[1], 10);
+          tooth.pocketDepthLingualCenter = parseInt(pdLingualMatch[2], 10);
+          tooth.pocketDepthLingualRight = parseInt(pdLingualMatch[3], 10);
+        }
+
+        // Check for clinical attachment level
+        const calMatch = line.match(/(?:clinical attachment level|cal) buccal (\d+) (\d+) (\d+)/i);
+        if (calMatch) {
+          tooth.clinicalAttachmentLevelBuccalLeft = parseInt(calMatch[1], 10);
+          tooth.clinicalAttachmentLevelBuccalCenter = parseInt(calMatch[2], 10);
+          tooth.clinicalAttachmentLevelBuccalRight = parseInt(calMatch[3], 10);
+        }
+
+        const calLingualMatch = line.match(/(?:clinical attachment level|cal) lingual (\d+) (\d+) (\d+)/i);
+        if (calLingualMatch) {
+          tooth.clinicalAttachmentLevelLingualLeft = parseInt(calLingualMatch[1], 10);
+          tooth.clinicalAttachmentLevelLingualCenter = parseInt(calLingualMatch[2], 10);
+          tooth.clinicalAttachmentLevelLingualRight = parseInt(calLingualMatch[3], 10);
+        }
+
+        // Check for bleeding
+        if (line.includes('bleeding')) {
+          tooth.isBleedingBuccalLeft = true;
+          tooth.isBleedingBuccalCenter = true;
+          tooth.isBleedingBuccalRight = true;
+          tooth.isBleedingLingualLeft = true;
+          tooth.isBleedingLingualCenter = true;
+          tooth.isBleedingLingualRight = true;
+        }
+
+        // Add or update the tooth in the teeth array
+        const existingToothIndex = this.teeth.findIndex(t => t.toothNumber === toothNumber);
+        if (existingToothIndex > -1) {
+          this.teeth[existingToothIndex] = { ...this.teeth[existingToothIndex], ...tooth }; // Update existing tooth
+        } else {
+          this.teeth.push(tooth); // Add new tooth
+        }
+      }
     }
 
     console.log(this.teeth); // Log the created Tooth objects
-}
+  }
 
   stopRecording() {
     // Logic to stop recording if needed
@@ -492,20 +499,20 @@ saveChart() {
   }
   getToothValue(toothNumber: number, property: keyof Tooth): number | boolean {
     const tooth = this.teeth.find(t => t.toothNumber === toothNumber);
-    
+
     // Check if the tooth exists and the property is defined
     if (tooth && tooth[property] !== undefined) {
-        const value = tooth[property];
+      const value = tooth[property];
 
-        // Ensure the value is either a number or boolean
-        if (typeof value === 'number' || typeof value === 'boolean') {
-            return value;
-        }
+      // Ensure the value is either a number or boolean
+      if (typeof value === 'number' || typeof value === 'boolean') {
+        return value;
+      }
     }
 
     // Return a default value if not found or type is incorrect
     return 0; // or false, depending on your logic
-}
+  }
 
 clearAll() {
   debugger
@@ -521,12 +528,12 @@ toggleEdit() {
 }
 newReport(){
 
-}
-
-cancel(){
-
-}
   }
+
+  cancel() {
+
+  }
+}
 
 
 
