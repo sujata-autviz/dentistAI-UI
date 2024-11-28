@@ -50,15 +50,17 @@
 // table UI
 
 .chartTable-cutsom {
-  font-weight: normal;
-  width: 100%;
+  // font-weight: normal;
+  // width: 100%;
 
   thead tr th {
-    // position: sticky;
-    // top: 0
+    position: sticky;
+    top: 0;
+    z-index: 101;
     font-weight: normal;
     padding: 24px;
-    width: 140px;
+    background-color: #fff;
+    // width: 140px;
   }
 
   tbody tr td {
@@ -278,6 +280,20 @@
       -webkit-appearance: none;
       margin: 0;
     }
+
+    &:focus-visible {
+      outline: none !important;
+      border: 0 !important;
+    }
+
+    &:disabled {
+      background-color: transparent !important;
+      color: #747474;
+    }
+
+    &:enabled {
+      border: 1px solid #eee !important;
+    }
   }
 }
 
@@ -285,6 +301,5 @@
 .animated-recording {
   width: 20px;
   height: 20px;
-  // max-width: 20px;
   color: #1E1E1E;
 }

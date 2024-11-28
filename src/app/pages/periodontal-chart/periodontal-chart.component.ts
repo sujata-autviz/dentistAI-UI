@@ -18,7 +18,7 @@ import { NotificationsService } from '../../core/services/notifications.service'
   styleUrl: './periodontal-chart.component.scss'
 })
 export class PeriodontalChartComponent extends BaseDestroyCompoent implements OnInit {
-
+  isEditMode: boolean = false; 
   // patientId: string | null = null;
   patientId = '6745601e5e34594ff9d75afb';
   periodontalChart: PeriodontalChart | undefined
@@ -56,7 +56,7 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   }
   generatePdValues() {
     this.pdValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 32; i++) {
       this.pdValues.push({
         toothNumber: i,
         pocketDepthBuccalLeft: 0,
@@ -77,83 +77,83 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   }
 
   // Generate Gingival Margin Values
-  generateGmValues() {
-    this.gmValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
-      this.gmValues.push({
-        toothNumber: i,
-        gingivalMarginBuccalLeft: 0,
-        gingivalMarginBuccalCenter: 0,
-        gingivalMarginBuccalRight: 0,
-        gingivalMarginLingualLeft: 0,
-        gingivalMarginLingualCenter: 0,
-        gingivalMarginLingualRight: 0,
-      });
-    }
+generateGmValues() {
+  this.gmValues = []; // Reset the array before pushing values
+  for (let i = 1; i <= 32; i++) {
+    this.gmValues.push({
+      toothNumber: i,
+      gingivalMarginBuccalLeft: 0,
+      gingivalMarginBuccalCenter: 0,
+      gingivalMarginBuccalRight: 0,
+      gingivalMarginLingualLeft: 0,
+      gingivalMarginLingualCenter: 0,
+      gingivalMarginLingualRight: 0,
+    });
   }
+}
 
-  // Generate Clinical Attachment Level Values
-  generateCalValues() {
-    this.calValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
-      this.calValues.push({
-        toothNumber: i,
-        clinicalAttachmentLevelBuccalLeft: 0,
-        clinicalAttachmentLevelBuccalCenter: 0,
-        clinicalAttachmentLevelBuccalRight: 0,
-        clinicalAttachmentLevelLingualLeft: 0,
-        clinicalAttachmentLevelLingualCenter: 0,
-        clinicalAttachmentLevelLingualRight: 0,
-      });
-    }
+// Generate Clinical Attachment Level Values
+generateCalValues() {
+  this.calValues = []; // Reset the array before pushing values
+  for (let i = 1; i <= 32; i++) {
+    this.calValues.push({
+      toothNumber: i,
+      clinicalAttachmentLevelBuccalLeft: 0,
+      clinicalAttachmentLevelBuccalCenter: 0,
+      clinicalAttachmentLevelBuccalRight: 0,
+      clinicalAttachmentLevelLingualLeft: 0,
+      clinicalAttachmentLevelLingualCenter: 0,
+      clinicalAttachmentLevelLingualRight: 0,
+    });
   }
+}
 
-  // Generate Bleeding Values
-  generateBleedingValues() {
-    this.bleedingValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
-      this.bleedingValues.push({
-        toothNumber: i,
-        isBleedingBuccalLeft: false,
-        isBleedingBuccalCenter: false,
-        isBleedingBuccalRight: false,
-        isBleedingLingualLeft: false,
-        isBleedingLingualCenter: false,
-        isBleedingLingualRight: false,
-      });
-    }
+// Generate Bleeding Values
+generateBleedingValues() {
+  this.bleedingValues = []; // Reset the array before pushing values
+  for (let i = 1; i <= 32; i++) {
+    this.bleedingValues.push({
+      toothNumber: i,
+      isBleedingBuccalLeft: false,
+      isBleedingBuccalCenter: false,
+      isBleedingBuccalRight: false,
+      isBleedingLingualLeft: false,
+      isBleedingLingualCenter: false,
+      isBleedingLingualRight: false,
+    });
   }
+}
 
-  // Generate Suppuration Values
-  generateSuppurationValues() {
-    this.suppurationValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
-      this.suppurationValues.push({
-        toothNumber: i,
-        isSuppurationBuccalLeft: false,
-        isSuppurationBuccalCenter: false,
-        isSuppurationBuccalRight: false,
-        isSuppurationLingualLeft: false,
-        isSuppurationLingualCenter: false,
-        isSuppurationLingualRight: false,
-      });
-    }
+// Generate Suppuration Values
+generateSuppurationValues() {
+  this.suppurationValues = []; // Reset the array before pushing values
+  for (let i = 1; i <= 32; i++) {
+    this.suppurationValues.push({
+      toothNumber: i,
+      isSuppurationBuccalLeft: false,
+      isSuppurationBuccalCenter: false,
+      isSuppurationBuccalRight: false,
+      isSuppurationLingualLeft: false,
+      isSuppurationLingualCenter: false,
+      isSuppurationLingualRight: false,
+    });
   }
+}
 
-  generateMgjValues() {
-    this.mgjValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
-      this.mgjValues.push({
-        toothNumber: i,
-        mucogingivalJunctionBuccalLeft: 0,
-        mucogingivalJunctionBuccalCenter: 0,
-        mucogingivalJunctionBuccalRight: 0,
-        mucogingivalJunctionLingualLeft: 0,
-        mucogingivalJunctionLingualCenter: 0,
-        mucogingivalJunctionLingualRight: 0,
-      });
-    }
+generateMgjValues() {
+  this.mgjValues = []; // Reset the array before pushing values
+  for (let i = 1; i <= 32; i++) {
+    this.mgjValues.push({
+      toothNumber: i,
+     mucogingivalJunctionBuccalLeft: 0,
+     mucogingivalJunctionBuccalCenter: 0,
+     mucogingivalJunctionBuccalRight: 0,
+     mucogingivalJunctionLingualLeft: 0,
+     mucogingivalJunctionLingualCenter: 0,
+     mucogingivalJunctionLingualRight: 0,
+    });
   }
+}
 
   getPatientChart() {
 
@@ -173,141 +173,141 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
 
         }
       );
-  }
-
-
-  updateValuesFromCharts() {
-    this.charts.forEach(chart => {
-      chart.teeth.forEach(tooth => {
-        // Update PD Values
-        const pdIndex = this.pdValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (pdIndex !== -1) {
-          this.pdValues[pdIndex].pocketDepthBuccalLeft = tooth.pocketDepthBuccalLeft;
-          this.pdValues[pdIndex].pocketDepthBuccalCenter = tooth.pocketDepthBuccalCenter;
-          this.pdValues[pdIndex].pocketDepthBuccalRight = tooth.pocketDepthBuccalRight;
-          this.pdValues[pdIndex].pocketDepthLingualLeft = tooth.pocketDepthLingualLeft;
-          this.pdValues[pdIndex].pocketDepthLingualCenter = tooth.pocketDepthLingualCenter;
-          this.pdValues[pdIndex].pocketDepthLingualRight = tooth.pocketDepthLingualRight;
-          this.pdValues[pdIndex].mobilityGrade = tooth.mobilityGrade;
-        }
-
-        // Update GM Values
-        const gmIndex = this.gmValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (gmIndex !== -1) {
-          this.gmValues[gmIndex].gingivalMarginBuccalLeft = tooth.gingivalMarginBuccalLeft;
-          this.gmValues[gmIndex].gingivalMarginBuccalCenter = tooth.gingivalMarginBuccalCenter;
-          this.gmValues[gmIndex].gingivalMarginBuccalRight = tooth.gingivalMarginBuccalRight;
-          this.gmValues[gmIndex].gingivalMarginLingualLeft = tooth.gingivalMarginLingualLeft;
-          this.gmValues[gmIndex].gingivalMarginLingualCenter = tooth.gingivalMarginLingualCenter;
-          this.gmValues[gmIndex].gingivalMarginLingualRight = tooth.gingivalMarginLingualRight;
-        }
-
-        // Update CAL Values
-        const calIndex = this.calValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (calIndex !== -1) {
-          this.calValues[calIndex].clinicalAttachmentLevelBuccalLeft = tooth.clinicalAttachmentLevelBuccalLeft;
-          this.calValues[calIndex].clinicalAttachmentLevelBuccalCenter = tooth.clinicalAttachmentLevelBuccalCenter;
-          this.calValues[calIndex].clinicalAttachmentLevelBuccalRight = tooth.clinicalAttachmentLevelBuccalRight;
-          this.calValues[calIndex].clinicalAttachmentLevelLingualLeft = tooth.clinicalAttachmentLevelLingualLeft;
-          this.calValues[calIndex].clinicalAttachmentLevelLingualCenter = tooth.clinicalAttachmentLevelLingualCenter;
-          this.calValues[calIndex].clinicalAttachmentLevelLingualRight = tooth.clinicalAttachmentLevelLingualRight;
-        }
-
-        // Update Bleeding Values
-        const bleedingIndex = this.bleedingValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (bleedingIndex !== -1) {
-          this.bleedingValues[bleedingIndex].isBleedingBuccalLeft = tooth.isBleedingBuccalLeft;
-          this.bleedingValues[bleedingIndex].isBleedingBuccalCenter = tooth.isBleedingBuccalCenter;
-          this.bleedingValues[bleedingIndex].isBleedingBuccalRight = tooth.isBleedingBuccalRight;
-          this.bleedingValues[bleedingIndex].isBleedingLingualLeft = tooth.isBleedingLingualLeft;
-          this.bleedingValues[bleedingIndex].isBleedingLingualCenter = tooth.isBleedingLingualCenter;
-          this.bleedingValues[bleedingIndex].isBleedingLingualRight = tooth.isBleedingLingualRight;
-        }
-
-        // Update Suppuration Values
-        const suppurationIndex = this.suppurationValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (suppurationIndex !== -1) {
-          this.suppurationValues[suppurationIndex].isSuppurationBuccalLeft = tooth.isSuppurationBuccalLeft;
-          this.suppurationValues[suppurationIndex].isSuppurationBuccalCenter = tooth.isSuppurationBuccalCenter;
-          this.suppurationValues[suppurationIndex].isSuppurationBuccalRight = tooth.isSuppurationBuccalRight;
-          this.suppurationValues[suppurationIndex].isSuppurationLingualLeft = tooth.isSuppurationLingualLeft;
-          this.suppurationValues[suppurationIndex].isSuppurationLingualCenter = tooth.isSuppurationLingualCenter;
-          this.suppurationValues[suppurationIndex].isSuppurationLingualRight = tooth.isSuppurationLingualRight;
-        }
-
-        // Update MGJ Values
-        const mgjIndex = this.mgjValues.findIndex(item => item.toothNumber === tooth.toothNumber);
-        if (mgjIndex !== -1) {
-          this.mgjValues[mgjIndex].mucogingivalJunctionBuccalLeft = tooth.mucogingivalJunctionBuccalLeft;
-          this.mgjValues[mgjIndex].mucogingivalJunctionBuccalCenter = tooth.mucogingivalJunctionBuccalCenter;
-          this.mgjValues[mgjIndex].mucogingivalJunctionBuccalRight = tooth.mucogingivalJunctionBuccalRight;
-          this.mgjValues[mgjIndex].mucogingivalJunctionLingualLeft = tooth.mucogingivalJunctionLingualLeft;
-          this.mgjValues[mgjIndex].mucogingivalJunctionLingualCenter = tooth.mucogingivalJunctionLingualCenter;
-          this.mgjValues[mgjIndex].mucogingivalJunctionLingualRight = tooth.mucogingivalJunctionLingualRight;
-        }
-      });
-    });
-
-    // Sort each array by toothNumber and limit to the first 16 entries
-    this.pdValues.sort((a, b) => a.toothNumber - b.toothNumber);
-    this.gmValues.sort((a, b) => a.toothNumber - b.toothNumber);
-    this.calValues.sort((a, b) => a.toothNumber - b.toothNumber);
-    this.bleedingValues.sort((a, b) => a.toothNumber - b.toothNumber);
-    this.suppurationValues.sort((a, b) => a.toothNumber - b.toothNumber);
-    this.mgjValues.sort((a, b) => a.toothNumber - b.toothNumber);
-
-    this.pdValues = this.pdValues.slice(0, 16);
-    this.gmValues = this.gmValues.slice(0, 16);
-    this.calValues = this.calValues.slice(0, 16);
-    this.bleedingValues = this.bleedingValues.slice(0, 16);
-    this.suppurationValues = this.suppurationValues.slice(0, 16);
-    this.mgjValues = this.mgjValues.slice(0, 16);
-  }
-
-  calculateCAL(value: any): void {
-    const toothNumber = value.toothNumber;
-    // Find the corresponding PD and GM values based on the tooth number
-    const pdValue = this.pdValues.find(item => item.toothNumber === toothNumber);
-    const gmValue = this.gmValues.find(item => item.toothNumber === toothNumber);
-
-    // Find the index in the calValues array to update the CAL for the specific tooth
-    const calIndex = this.calValues.findIndex(item => item.toothNumber === toothNumber);
-
-    if (calIndex !== -1 && pdValue && gmValue) {
-      // Calculate CAL for each region (Buccal and Lingual) using PD and GM values
-      this.calValues[calIndex].clinicalAttachmentLevelBuccalLeft =
-        (pdValue.pocketDepthBuccalLeft ?? 0) + (gmValue.gingivalMarginBuccalLeft ?? 0);
-
-      this.calValues[calIndex].clinicalAttachmentLevelBuccalCenter =
-        (pdValue.pocketDepthBuccalCenter ?? 0) + (gmValue.gingivalMarginBuccalCenter ?? 0);
-
-      this.calValues[calIndex].clinicalAttachmentLevelBuccalRight =
-        (pdValue.pocketDepthBuccalRight ?? 0) + (gmValue.gingivalMarginBuccalRight ?? 0);
-
-      this.calValues[calIndex].clinicalAttachmentLevelLingualLeft =
-        (pdValue.pocketDepthLingualLeft ?? 0) + (gmValue.gingivalMarginLingualLeft ?? 0);
-
-      this.calValues[calIndex].clinicalAttachmentLevelLingualCenter =
-        (pdValue.pocketDepthLingualCenter ?? 0) + (gmValue.gingivalMarginLingualCenter ?? 0);
-
-      this.calValues[calIndex].clinicalAttachmentLevelLingualRight =
-        (pdValue.pocketDepthLingualRight ?? 0) + (gmValue.gingivalMarginLingualRight ?? 0);
-
-      console.log(`Updated CAL for Tooth Number ${toothNumber}:`, this.calValues[calIndex]);
-    } else {
-      // If the PD or GM value is not found, log a warning message
-      console.warn(`Tooth with number ${toothNumber} not found in PD or GM values.`);
     }
-  }
-
-
-  saveChart() {
-    this.teeth = this.pdValues.map(pd => {
-      const gm = this.gmValues.find(item => item.toothNumber === pd.toothNumber);
-      const cal = this.calValues.find(item => item.toothNumber === pd.toothNumber);
-      const bleeding = this.bleedingValues.find(item => item.toothNumber === pd.toothNumber);
-      const suppuration = this.suppurationValues.find(item => item.toothNumber === pd.toothNumber);
-      const mgj = this.mgjValues.find(item => item.toothNumber === pd.toothNumber);
+      
+    
+    updateValuesFromCharts() {
+      this.charts.forEach(chart => {
+        chart.teeth.forEach(tooth => {
+          // Update PD Values
+          const pdIndex = this.pdValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (pdIndex !== -1) {
+            this.pdValues[pdIndex].pocketDepthBuccalLeft = tooth.pocketDepthBuccalLeft;
+            this.pdValues[pdIndex].pocketDepthBuccalCenter = tooth.pocketDepthBuccalCenter;
+            this.pdValues[pdIndex].pocketDepthBuccalRight = tooth.pocketDepthBuccalRight;
+            this.pdValues[pdIndex].pocketDepthLingualLeft = tooth.pocketDepthLingualLeft;
+            this.pdValues[pdIndex].pocketDepthLingualCenter = tooth.pocketDepthLingualCenter;
+            this.pdValues[pdIndex].pocketDepthLingualRight = tooth.pocketDepthLingualRight;
+            this.pdValues[pdIndex].mobilityGrade = tooth.mobilityGrade;
+          }
+    
+          // Update GM Values
+          const gmIndex = this.gmValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (gmIndex !== -1) {
+            this.gmValues[gmIndex].gingivalMarginBuccalLeft = tooth.gingivalMarginBuccalLeft;
+            this.gmValues[gmIndex].gingivalMarginBuccalCenter = tooth.gingivalMarginBuccalCenter;
+            this.gmValues[gmIndex].gingivalMarginBuccalRight = tooth.gingivalMarginBuccalRight;
+            this.gmValues[gmIndex].gingivalMarginLingualLeft = tooth.gingivalMarginLingualLeft;
+            this.gmValues[gmIndex].gingivalMarginLingualCenter = tooth.gingivalMarginLingualCenter;
+            this.gmValues[gmIndex].gingivalMarginLingualRight = tooth.gingivalMarginLingualRight;
+          }
+    
+          // Update CAL Values
+          const calIndex = this.calValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (calIndex !== -1) {
+            this.calValues[calIndex].clinicalAttachmentLevelBuccalLeft = tooth.clinicalAttachmentLevelBuccalLeft;
+            this.calValues[calIndex].clinicalAttachmentLevelBuccalCenter = tooth.clinicalAttachmentLevelBuccalCenter;
+            this.calValues[calIndex].clinicalAttachmentLevelBuccalRight = tooth.clinicalAttachmentLevelBuccalRight;
+            this.calValues[calIndex].clinicalAttachmentLevelLingualLeft = tooth.clinicalAttachmentLevelLingualLeft;
+            this.calValues[calIndex].clinicalAttachmentLevelLingualCenter = tooth.clinicalAttachmentLevelLingualCenter;
+            this.calValues[calIndex].clinicalAttachmentLevelLingualRight = tooth.clinicalAttachmentLevelLingualRight;
+          }
+    
+          // Update Bleeding Values
+          const bleedingIndex = this.bleedingValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (bleedingIndex !== -1) {
+            this.bleedingValues[bleedingIndex].isBleedingBuccalLeft = tooth.isBleedingBuccalLeft;
+            this.bleedingValues[bleedingIndex].isBleedingBuccalCenter = tooth.isBleedingBuccalCenter;
+            this.bleedingValues[bleedingIndex].isBleedingBuccalRight = tooth.isBleedingBuccalRight;
+            this.bleedingValues[bleedingIndex].isBleedingLingualLeft = tooth.isBleedingLingualLeft;
+            this.bleedingValues[bleedingIndex].isBleedingLingualCenter = tooth.isBleedingLingualCenter;
+            this.bleedingValues[bleedingIndex].isBleedingLingualRight = tooth.isBleedingLingualRight;
+          }
+    
+          // Update Suppuration Values
+          const suppurationIndex = this.suppurationValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (suppurationIndex !== -1) {
+            this.suppurationValues[suppurationIndex].isSuppurationBuccalLeft = tooth.isSuppurationBuccalLeft;
+            this.suppurationValues[suppurationIndex].isSuppurationBuccalCenter = tooth.isSuppurationBuccalCenter;
+            this.suppurationValues[suppurationIndex].isSuppurationBuccalRight = tooth.isSuppurationBuccalRight;
+            this.suppurationValues[suppurationIndex].isSuppurationLingualLeft = tooth.isSuppurationLingualLeft;
+            this.suppurationValues[suppurationIndex].isSuppurationLingualCenter = tooth.isSuppurationLingualCenter;
+            this.suppurationValues[suppurationIndex].isSuppurationLingualRight = tooth.isSuppurationLingualRight;
+          }
+    
+          // Update MGJ Values
+          const mgjIndex = this.mgjValues.findIndex(item => item.toothNumber === tooth.toothNumber);
+          if (mgjIndex !== -1) {
+            this.mgjValues[mgjIndex].mucogingivalJunctionBuccalLeft = tooth.mucogingivalJunctionBuccalLeft;
+            this.mgjValues[mgjIndex].mucogingivalJunctionBuccalCenter = tooth.mucogingivalJunctionBuccalCenter;
+            this.mgjValues[mgjIndex].mucogingivalJunctionBuccalRight = tooth.mucogingivalJunctionBuccalRight;
+            this.mgjValues[mgjIndex].mucogingivalJunctionLingualLeft = tooth.mucogingivalJunctionLingualLeft;
+            this.mgjValues[mgjIndex].mucogingivalJunctionLingualCenter = tooth.mucogingivalJunctionLingualCenter;
+            this.mgjValues[mgjIndex].mucogingivalJunctionLingualRight = tooth.mucogingivalJunctionLingualRight;
+          }
+        });
+      });
+    
+      // Sort each array by toothNumber and limit to the first 16 entries
+      this.pdValues.sort((a, b) => a.toothNumber - b.toothNumber);
+      this.gmValues.sort((a, b) => a.toothNumber - b.toothNumber);
+      this.calValues.sort((a, b) => a.toothNumber - b.toothNumber);
+      this.bleedingValues.sort((a, b) => a.toothNumber - b.toothNumber);
+      this.suppurationValues.sort((a, b) => a.toothNumber - b.toothNumber);
+      this.mgjValues.sort((a, b) => a.toothNumber - b.toothNumber);
+    
+      this.pdValues = this.pdValues.slice(0, 32);
+      this.gmValues = this.gmValues.slice(0, 32);
+      this.calValues = this.calValues.slice(0, 32);
+      this.bleedingValues = this.bleedingValues.slice(0, 32);
+      this.suppurationValues = this.suppurationValues.slice(0, 32);
+      this.mgjValues = this.mgjValues.slice(0, 32);
+    }
+    
+    calculateCAL(value: any): void {
+      const toothNumber = value.toothNumber;
+      // Find the corresponding PD and GM values based on the tooth number
+      const pdValue = this.pdValues.find(item => item.toothNumber === toothNumber);
+      const gmValue = this.gmValues.find(item => item.toothNumber === toothNumber);
+    
+      // Find the index in the calValues array to update the CAL for the specific tooth
+      const calIndex = this.calValues.findIndex(item => item.toothNumber === toothNumber);
+    
+      if (calIndex !== -1 && pdValue && gmValue) {
+        // Calculate CAL for each region (Buccal and Lingual) using PD and GM values
+        this.calValues[calIndex].clinicalAttachmentLevelBuccalLeft =
+          (pdValue.pocketDepthBuccalLeft ?? 0) + (gmValue.gingivalMarginBuccalLeft ?? 0);
+        
+        this.calValues[calIndex].clinicalAttachmentLevelBuccalCenter =
+          (pdValue.pocketDepthBuccalCenter ?? 0) + (gmValue.gingivalMarginBuccalCenter ?? 0);
+        
+        this.calValues[calIndex].clinicalAttachmentLevelBuccalRight =
+          (pdValue.pocketDepthBuccalRight ?? 0) + (gmValue.gingivalMarginBuccalRight ?? 0);
+        
+        this.calValues[calIndex].clinicalAttachmentLevelLingualLeft =
+          (pdValue.pocketDepthLingualLeft ?? 0) + (gmValue.gingivalMarginLingualLeft ?? 0);
+        
+        this.calValues[calIndex].clinicalAttachmentLevelLingualCenter =
+          (pdValue.pocketDepthLingualCenter ?? 0) + (gmValue.gingivalMarginLingualCenter ?? 0);
+        
+        this.calValues[calIndex].clinicalAttachmentLevelLingualRight =
+          (pdValue.pocketDepthLingualRight ?? 0) + (gmValue.gingivalMarginLingualRight ?? 0);
+        
+        console.log(`Updated CAL for Tooth Number ${toothNumber}:`, this.calValues[calIndex]);
+      } else {
+        // If the PD or GM value is not found, log a warning message
+        console.warn(`Tooth with number ${toothNumber} not found in PD or GM values.`);
+      }
+    }
+    
+  
+saveChart() {
+  this.teeth = this.pdValues.map(pd => {
+    const gm = this.gmValues.find(item => item.toothNumber === pd.toothNumber);
+    const cal = this.calValues.find(item => item.toothNumber === pd.toothNumber);
+    const bleeding = this.bleedingValues.find(item => item.toothNumber === pd.toothNumber);
+    const suppuration = this.suppurationValues.find(item => item.toothNumber === pd.toothNumber);
+    const mgj = this.mgjValues.find(item => item.toothNumber === pd.toothNumber);
 
       return {
         hasImplant: false,
@@ -514,13 +514,19 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
     return 0; // or false, depending on your logic
   }
 
-  clearAll() {
-
-  }
-  edit() {
-
-  }
-  newReport() {
+clearAll() {
+  debugger
+  this.generatePdValues(); // Reset to default values
+  this.generateGmValues();
+  this.generateCalValues();
+  this.generateBleedingValues();
+  this.generateSuppurationValues();
+  this.generateMgjValues();
+}
+toggleEdit() {
+  this.isEditMode = !this.isEditMode;
+}
+newReport(){
 
   }
 

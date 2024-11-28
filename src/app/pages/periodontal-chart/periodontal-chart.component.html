@@ -120,7 +120,7 @@
       Save
     </button>
 
-    <button class="bar-btn">
+    <button class="bar-btn" (click)="toggleEdit()">
       <img src="../../../assets/icons/bar-icons/edit.svg" alt="Edit" />
       Edit
     </button>
@@ -135,7 +135,7 @@
       Print
     </button>
 
-    <button class="bar-btn">
+    <button class="bar-btn" (click)="clearAll()">
       <img src="../../../assets/icons/bar-icons/clear.svg" alt="Clear All" />
       Clear All
     </button>
@@ -155,8 +155,8 @@
 
 <!-- custom-table  -->
 
-<div class="max-w-screen max-h-[90vh] overflow-auto p-4">
-  <table class="chartTable-cutsom mx-auto">
+<div class="relative max-w-full max-h-table-custom-height overflow-auto mt-5 lg:mt-[39px] mx-6">
+  <table class="chartTable-cutsom ">
     <thead>
       <tr>
         <th></th>
@@ -174,6 +174,7 @@
         <th>12</th>
         <th>13</th>
         <th>14</th>
+        <th>15</th>
         <th>16</th>
       </tr>
     </thead>
@@ -181,105 +182,416 @@
     <tbody>
       <!-- Mobility -->
       <tr>
-        <td>Mobility</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">Mobility</td>
         <td *ngFor="let value of pdValues.slice(0, 16); let i = index" class="text-center">
           <div class="align-td-row">
             <!-- Use a fallback value of 0 if mobilityGrade is undefined -->
             <input type="number" [(ngModel)]="value.mobilityGrade" id="mobilityGrade{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Mobility'" [value]="value.mobilityGrade || 0" min="0"
-              max="3" step="1" />
+              [value]="value.mobilityGrade || 0" min="0" max="3" step="1" [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- PD -->
       <tr>
-        <td>PD</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">PD</td>
         <td *ngFor="let value of pdValues.slice(0, 16); let i = index" class="text-center">
           <div class="align-td-row">
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthBuccalLeft" id="buccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthBuccalCenter" id="buccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthBuccalRight" id="buccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- GM -->
       <tr>
-        <td>GM</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">GM</td>
         <td *ngFor="let value of gmValues.slice(0, 16); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginBuccalLeft" id="gmBuccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginBuccalCenter"
               id="gmBuccalCenter{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
-              (change)="calculateCAL(value)" />
+              (change)="calculateCAL(value)" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginBuccalRight" id="gmBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- CAL -->
       <tr>
-        <td>CAL</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">CAL</td>
         <td *ngFor="let value of calValues.slice(0, 16); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalLeft"
-              id="calBuccalLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" />
+              id="calBuccalLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalCenter"
               id="calBuccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalRight"
-              id="calBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" />
+              id="calBuccalRight{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
+              [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- MGJ -->
       <tr>
-        <td>MGJ</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">MGJ</td>
         <td *ngFor="let value of mgjValues.slice(0, 16); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalLeft"
               id="mucogingivalJunctionBuccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalCenter"
               id="mucogingivalJunctionBuccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalRight"
               id="mucogingivalJunctionBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- FG -->
       <tr>
-        <td>FG</td>
+        <td class="sticky left-[-1px] bg-white z-[99]">FG</td>
+        <td>
+          <div *ngIf="3 > 2" class="triangle-shapde">
+            <div class="above-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+
+            <div class="rectangle relative">
+              <span class="bottom_line"></span>
+            </div>
+
+            <div class="bottom-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="3 > 2" class="traingle-ovals-shape">
+            <div class="above-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+            <div class="rectangle"></div>
+            <div class="bottom-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="3 > 2" class="rectangle-H-divided-shape">
+            <div class="above-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+            <div class="rectangle relative">
+              <span class="divider"></span>
+            </div>
+            <div class="bottom-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="3 > 2" class="rectangle-V-divided-shape">
+            <div class="above-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+            <div class="rectangle relative">
+              <span class="divider"></span>
+            </div>
+            <div class="bottom-ovals">
+              <span class="oval"></span>
+              <span class="oval"></span>
+              <span class="oval"></span>
+            </div>
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- PD -->
+
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">PD</td>
+        <td *ngFor="let value of pdValues.slice(0, 16); let i = index">
+          <div class="align-td-row">
+            <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthLingualLeft" id="buccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthLingualCenter" id="buccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthLingualRight" id="buccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- GM -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">GM</td>
+        <td *ngFor="let value of gmValues.slice(0, 16); let i = index">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualLeft" id="gmLingualLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualCenter"
+              id="gmLingualCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualRight"
+              id="gmLingualRight{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
+              (change)="calculateCAL(value)" [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+      <!-- CAL -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">CAL</td>
+        <td *ngFor="let value of calValues.slice(0, 16); let i = index">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualLeft"
+              id="calLingualLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualCenter"
+              id="calLingualCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualRight"
+              id="calLingualRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- MGJ -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">MGJ</td>
+        <td *ngFor="let value of mgjValues.slice(0, 16); let i = index">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualLeft"
+              id="mucogingivalJunctionLingualLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualCenter"
+              id="mucogingivalJunctionLingualCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualRight"
+              id="mucogingivalJunctionLingualRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="relative max-w-full max-h-table-custom-height overflow-auto mt-5 lg:mt-[39px] mx-6">
+  <table class="chartTable-cutsom mx-auto">
+    <thead>
+      <tr>
+        <th></th>
+        <th>17</th>
+        <th>18</th>
+        <th>19</th>
+        <th>20</th>
+        <th>21</th>
+        <th>22</th>
+        <th>23</th>
+        <th>24</th>
+        <th>25</th>
+        <th>26</th>
+        <th>27</th>
+        <th>28</th>
+        <th>29</th>
+        <th>30</th>
+        <th>31</th>
+        <th>32</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Mobility -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">Mobility</td>
+        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index">
+          <div class="value-container">
+            <!-- Use a fallback value of 0 if mobilityGrade is undefined -->
+            <input type="number" [(ngModel)]="value.mobilityGrade" id="mobilityGrade{{ value.toothNumber }}"
+              [value]="value.mobilityGrade || 0" min="0" max="3" step="1" [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- PD -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">PD</td>
+        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index" class="text-center">
+          <div class="align-td-row">
+            <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalLeft" id="buccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalCenter" id="buccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalRight" id="buccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- GM -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">GM</td>
+        <td *ngFor="let value of gmValues.slice(16, 32).reverse(); let i = index" class="text-center">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalLeft" id="gmBuccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalCenter"
+              id="gmBuccalCenter{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
+              (change)="calculateCAL(value)" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalRight" id="gmBuccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- CAL -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">CAL</td>
+        <td *ngFor="let value of calValues.slice(16, 32).reverse(); let i = index" class="text-center">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalLeft"
+              id="calBuccalLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
+              [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalCenter"
+              id="calBuccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalRight"
+              id="calBuccalRight{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
+              [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- MGJ -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">MGJ</td>
+        <td *ngFor="let value of mgjValues.slice(16, 32).reverse(); let i = index" class="text-center">
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalLeft"
+              id="mucogingivalJunctionBuccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalCenter"
+              id="mucogingivalJunctionBuccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" [disabled]="!isEditMode" />
+          </div>
+          <div class="align-td-row">
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalRight"
+              id="mucogingivalJunctionBuccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" [disabled]="!isEditMode" />
+          </div>
+        </td>
+      </tr>
+
+      <!-- FG -->
+      <tr>
+        <td class="sticky left-[-1px] bg-white z-[99]">FG</td>
         <td>
           <div *ngIf="3 > 2" class="triangle-shapde">
             <div class="above-ovals">
@@ -363,88 +675,93 @@
 
       <!-- PD -->
       <tr>
-        <td>PD</td>
-        <td *ngFor="let value of pdValues.slice(0, 16); let i = index" class="text-center">
+        <td class="sticky left-[-1px] bg-white z-[99]">PD</td>
+        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index" class="text-center">
           <div class="align-td-row">
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthLingualLeft" id="buccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
 
           <div class="align-td-row">
             <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthLingualCenter" id="buccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
 
           <div class="align-td-row">
             <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
             <input type="number" [(ngModel)]="value.pocketDepthLingualRight" id="buccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- GM -->
       <tr>
-        <td>GM</td>
-        <td *ngFor="let value of gmValues.slice(0, 16); let i = index" class="text-center">
+        <td class="sticky left-[-1px] bg-white z-[99]">GM</td>
+        <td *ngFor="let value of gmValues.slice(16, 32).reverse(); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginLingualLeft" id="gmLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginLingualCenter"
               id="gmLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.gingivalMarginLingualRight"
               id="gmLingualRight{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
-              (change)="calculateCAL(value)" />
+              (change)="calculateCAL(value)" [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
       <!-- CAL -->
       <tr>
-        <td>CAL</td>
-        <td *ngFor="let value of calValues.slice(0, 16); let i = index" class="text-center">
+        <td class="sticky left-[-1px] bg-white z-[99]">CAL</td>
+        <td *ngFor="let value of calValues.slice(16, 32).reverse(); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualLeft"
-              id="calLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" />
+              id="calLingualLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
+              [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualCenter"
               id="calLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualRight"
               id="calLingualRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
 
       <!-- MGJ -->
       <tr>
-        <td>MGJ</td>
-        <td *ngFor="let value of mgjValues.slice(0, 16); let i = index" class="text-center">
+        <td class="sticky left-[-1px] bg-white z-[99]">MGJ</td>
+        <td *ngFor="let value of mgjValues.slice(16, 32).reverse(); let i = index" class="text-center">
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualLeft"
               id="mucogingivalJunctionLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualCenter"
               id="mucogingivalJunctionLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" [disabled]="!isEditMode" />
           </div>
           <div class="align-td-row">
             <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualRight"
               id="mucogingivalJunctionLingualRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" [disabled]="!isEditMode" />
           </div>
         </td>
       </tr>
