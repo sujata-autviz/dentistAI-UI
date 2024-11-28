@@ -47,7 +47,7 @@
   }
 }
 
-.CAL-value-container {
+.value-container {
   display: flex;
   gap: 6px;
   text-align: center;
@@ -56,10 +56,10 @@
 
   input {
     width: 12px !important;
-    font-weight: 600;
+    font-weight: 500;
 
     &::placeholder {
-      font-weight: 600;
+      font-weight: 500;
     }
 
     &:focus {
