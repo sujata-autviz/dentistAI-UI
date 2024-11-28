@@ -1,41 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { VoiceRecognitionRequest } from '../../interfaces/voice-recognition-request';
 declare var annyang: any;
 @Injectable({
   providedIn: 'root'
 })
 export class SpeechRecognitionService {
-  private updateChartCallback!: (toothNumber: number, mobility: string, pd: string) => void;
+  private apiUrl = `${environment.baseUrl}/api/Speech`; // Replace with your .NET API URL
 
- 
-  constructor() {
-    if (annyang) {
-      // Set up the commands
-      const commands = {
-        'tooth *number mobility *value': (number: string, value: string) => {
-          const toothNumber = parseInt(number);
-          this.updateChartCallback(toothNumber, value, ''); // Call the callback to update mobility
-        },
-        'tooth *number pd *value': (number: string, value: string) => {
-          const toothNumber = parseInt(number);
-          this.updateChartCallback(toothNumber, '', value); // Call the callback to update PD
-        }
-      };
+  constructor(private http: HttpClient) {}
 
-      // Add the commands to annyang
-      annyang.addCommands(commands);
-    }
-  }
-
-  startRecognition(updateChart: (toothNumber: number, mobility: string, pd: string) => void) {
-    this.updateChartCallback = updateChart; // Store the callback
-    if (annyang) {
-      annyang.start();
-    }
-  }
-
-  stopRecognition() {
-    if (annyang) {
-      annyang.abort();
-    }
+  startVoiceRecognition(request: VoiceRecognitionRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Start`, request); // Call the Start endpoint
   }
 }

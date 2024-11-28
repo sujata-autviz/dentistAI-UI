@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withHashLocation } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -8,6 +8,6 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes , withComponentInputBinding()), provideClientHydration(),provideAnimations()
+  providers: [provideRouter(routes , withComponentInputBinding(), withHashLocation()), provideClientHydration(),provideAnimations()
     ,provideHttpClient(withFetch()),    provideHttpClient(withInterceptors([authInterceptor]))]
 };
