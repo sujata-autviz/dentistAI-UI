@@ -114,5 +114,7 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
 
 
 
-  
+
+
+
 
