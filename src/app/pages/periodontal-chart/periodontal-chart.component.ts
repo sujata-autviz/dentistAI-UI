@@ -17,6 +17,7 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   // patientId: string | null = null;
   patientId = '67457849dc74504f172751f9';
   periodontalChart: PeriodontalChart | undefined;
+  menuShow: boolean = false;
 
   constructor(private _periodontalChartService: PeriodontalChartService) {
     super();
@@ -26,6 +27,11 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
 
   }
 
+  showMenu() {
+    this.menuShow = !this.menuShow;
+    console.log(this.menuShow);
+
+  }
 
 
   getPatientChart() {
