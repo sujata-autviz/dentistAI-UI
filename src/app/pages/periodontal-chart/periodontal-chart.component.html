@@ -564,7 +564,7 @@
       <!-- Mobility -->
       <tr>
         <td>Mobility</td>
-        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of pdValues.slice(16, 32); let i = index">
           <div class="value-container">
             <!-- Use a fallback value of 0 if mobilityGrade is undefined -->
             <input
@@ -584,7 +584,7 @@
       <!-- PD -->
       <tr>
         <td>PD</td>
-        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of pdValues.slice(16, 32); let i = index">
           <div>
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
             <input
@@ -624,7 +624,7 @@
       <!-- GM -->
       <tr>
         <td>GM</td>
-        <td *ngFor="let value of gmValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of gmValues.slice(16, 32); let i = index">
           <div class="flex items-center">
             <input
               type="number"
@@ -661,7 +661,7 @@
       <!-- CAL -->
       <tr>
         <td>CAL</td>
-        <td *ngFor="let value of calValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of calValues.slice(16, 32); let i = index">
           <div>
             <input
               type="number"
@@ -695,7 +695,7 @@
       <!-- MGJ -->
       <tr>
         <td>MGJ</td>
-        <td *ngFor="let value of mgjValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of mgjValues.slice(16, 32); let i = index">
           <div>
             <input
               type="number"
@@ -813,7 +813,7 @@
       <!-- PD -->
       <tr>
         <td>PD</td>
-        <td *ngFor="let value of pdValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of pdValues.slice(16, 32); let i = index">
           <div>
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
             <input
@@ -853,7 +853,7 @@
       <!-- GM -->
       <tr>
         <td>GM</td>
-        <td *ngFor="let value of gmValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of gmValues.slice(16, 32); let i = index">
           <div>
             <input
               type="number"
@@ -889,7 +889,7 @@
       <!-- CAL -->
       <tr>
         <td>CAL</td>
-        <td *ngFor="let value of calValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of calValues.slice(16, 32); let i = index">
           <div>
             <input
               type="number"
@@ -923,7 +923,7 @@
       <!-- MGJ -->
       <tr>
         <td>MGJ</td>
-        <td *ngFor="let value of mgjValues.slice(16, 32).reverse(); let i = index">
+        <td *ngFor="let value of mgjValues.slice(16, 32); let i = index">
           <div>
             <input
               type="number"
