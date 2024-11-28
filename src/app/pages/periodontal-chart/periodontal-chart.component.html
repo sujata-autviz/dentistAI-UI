@@ -1,70 +1,65 @@
 <!-- header is here -->
 <nav
-  class="flex justify-between items-center container-fluid mx-auto w-100 position-sticky top-10 border-b border-[#EBEBEB] px-5 pt-3 pb-0"
->
-  <div class="flex align-items-end lg:gap-[50px]">
+  class="relative lg:flex container-fluid mx-auto w-100 lg:position-sticky border-b border-[#EBEBEB] px-5 pt-3 pb-0 lg:items-end">
+  <div class="flex justify-between items-center lg:block w-full lg:w-auto">
     <div class="logo-container">
-      <img
-        src="../../../assets/logo.svg"
-        alt="Better Diagnostics"
-        class="pb-3"
-      />
+      <img src="../../../assets/logo.svg" alt="Better Diagnostics" class="pb-3">
     </div>
 
-    <div class="nav_menu flex gap-2 items-end">
+
+    <button class="btn-menu block lg:hidden" (click)="showMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <div class="mobile-menu lg:flex lg:align-items-end lg:ml-[50px] lg:justify-between lg:w-full"
+    [ngClass]="{'showMenu': menuShow}">
+    <div class="nav_menu flex flex-col lg:flex-row lg:gap-2 lg:items-end">
       <a href="#">Home</a>
       <a href="#">Process XRays</a>
       <a href="#">Product Features</a>
       <a href="#">Sample Images</a>
     </div>
-  </div>
 
-  <div class="flex items-center gap-4">
-    <div
-      class="flex items-center justify-between lg:gap-5 text-[#1E1E1E] bg-[#F6F8FA] text-[#4A4A4A] px-[5px] py-[5px] lg:rounded-lg lg:text-sm"
-    >
-      <p class="flex items-center gap-2">
-        <img src="../../rvg.svg" class="lg:w-4 lg:h-4" alt="rvg" />
-        <span>RVG - 300/500</span>
-      </p>
 
-      <p class="flex items-center gap-2">
-        <img src="../../rvg.svg" class="lg:w-4 lg:h-4" alt="rvg" />
-        <span>OPG - 300/500</span>
-      </p>
+    <div class="flex flex-col gap-2 lg:items-center lg:gap-4 lg:flex-row lg:mb-2">
+      <div
+        class="flex flex-wrap justify-between lg:flex-row lg:items-center  lg:gap-5 bg-[#F6F8FA] text-[#4A4A4A] p-3 lg:px-[5px] lg:py-[5px] lg:rounded-lg lg:text-sm">
 
-      <div class="flex items-center gap-2">
-        <p
-          class="px-[10px] py-1 rounded-full bg-[#72727E] text-white lg:text-sm"
-        >
-          325 Days
+        <p class="flex items-center gap-2 whitespace-nowrap mb-3 lg:mb-0">
+          <img src="/assets/icons/box.svg" class="lg:w-4 lg:h-4" alt="rvg"> <span>RVG - 300/500</span>
         </p>
-        <i
-          class="fa-solid text-[#1E1E1E]"
-          [class]="5 > 2 ? 'fa-chevron-down' : 'fa-chevron-up'"
-        ></i>
+
+        <p class="flex items-center gap-2 whitespace-nowrap mb-3 lg:mb-0">
+          <img src="/assets/icons/box.svg" class="lg:w-4 lg:h-4" alt="rvg"> <span>OPG - 300/500</span>
+        </p>
+
+
+        <div class="flex items-center gap-2">
+          <p class="px-[10px] py-1 rounded-full bg-[#72727E] text-white lg:text-sm lg:whitespace-nowrap ">
+            325 Days
+          </p>
+          <i class="fa-solid text-[#1E1E1E]" [class]=" 5>2 ? 'fa-chevron-down' : 'fa-chevron-up' "></i>
+        </div>
+      </div>
+
+      <div
+        class="flex items-center justify-between p-3 bg-[#F6F8FA] text-[#4A4A4A] lg:px-[5px] lg:py-[5px] lg:rounded-lg lg:text-sm gap-[10px]">
+
+        <p class="">Better Diagnostic</p>
+
+        <span
+          class="rounded-full w-[30px] h-[30px] flex justify-center items-center text-sm text-white bg-[#447CB7] font-bold">BD</span>
+        <!-- <img src="" alt=""> -->
       </div>
     </div>
 
-    <div
-      class="flex items-center justify-between text-[#1E1E1E] bg-[#F6F8FA] text-[#4A4A4A] px-[5px] py-[5px] lg:rounded-lg lg:text-sm gap-[10px]"
-    >
-      <p class="">Better Diagnostic</p>
-
-      <span
-        class="rounded-full w-[30px] h-[30px] flex justify-center items-center text-sm text-white bg-[#447CB7] font-bold"
-        >BD</span
-      >
-      <!-- <img src="" alt=""> -->
-    </div>
   </div>
 </nav>
 <!-- header end here -->
 
 <!-- bar start here-->
-<div
-  class="bg-[#F8F8F8] w-100 px-5 py-4 flex justify-between flex-wrap lg:flex-nowrap items-center lg:mt-[11px]"
->
+<div class="bg-[#F8F8F8] w-100 px-5 py-4 flex justify-between flex-wrap lg:flex-nowrap items-center mt-5 lg:mt-[11px]">
   <h2 class="text-base text-textBlack font-semibold">Periodontal Chart</h2>
 
   <div class="flex gap-[10px] items-center flex-wrap">
@@ -145,16 +140,9 @@
         <td *ngFor="let value of pdValues.slice(0, 16); let i = index">
           <div class="value-container">
             <!-- Use a fallback value of 0 if mobilityGrade is undefined -->
-            <input
-              type="number"
-              [(ngModel)]="value.mobilityGrade"
-              id="mobilityGrade{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Mobility'"
-              [value]="value.mobilityGrade || 0"
-              min="0"
-              max="3"
-              step="1"
-            />
+            <input type="number" [(ngModel)]="value.mobilityGrade" id="mobilityGrade{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Mobility'" [value]="value.mobilityGrade || 0" min="0"
+              max="3" step="1" />
           </div>
         </td>
       </tr>
@@ -165,33 +153,18 @@
         <td *ngFor="let value of pdValues.slice(0, 16); let i = index">
           <div>
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthBuccalLeft"
-              id="buccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalLeft" id="buccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)" />
           </div>
           <div>
             <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthBuccalCenter"
-              id="buccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalCenter" id="buccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" (change)="calculateCAL(value)" />
           </div>
           <div>
             <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthBuccalRight"
-              id="buccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthBuccalRight" id="buccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)" />
           </div>
         </td>
       </tr>
@@ -201,31 +174,17 @@
         <td>GM</td>
         <td *ngFor="let value of gmValues.slice(0, 16); let i = index">
           <div class="flex items-center">
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginBuccalLeft"
-              id="gmBuccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalLeft" id="gmBuccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" (change)="calculateCAL(value)" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginBuccalCenter"
-              id="gmBuccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalCenter"
+              id="gmBuccalCenter{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
+              (change)="calculateCAL(value)" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginBuccalRight"
-              id="gmBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.gingivalMarginBuccalRight" id="gmBuccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" (change)="calculateCAL(value)" />
           </div>
         </td>
       </tr>
@@ -235,28 +194,18 @@
         <td>CAL</td>
         <td *ngFor="let value of calValues.slice(0, 16); let i = index">
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelBuccalLeft"
-              id="calBuccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
-            />
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalLeft"
+              id="calBuccalLeft{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelBuccalCenter"
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalCenter"
               id="calBuccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelBuccalRight"
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelBuccalRight"
               id="calBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" />
           </div>
         </td>
       </tr>
@@ -266,28 +215,19 @@
         <td>MGJ</td>
         <td *ngFor="let value of mgjValues.slice(0, 16); let i = index">
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionBuccalLeft"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalLeft"
               id="mucogingivalJunctionBuccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Left'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionBuccalCenter"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalCenter"
               id="mucogingivalJunctionBuccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Center'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionBuccalRight"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionBuccalRight"
               id="mucogingivalJunctionBuccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Buccal Right'" />
           </div>
         </td>
       </tr>
@@ -382,33 +322,18 @@
         <td *ngFor="let value of pdValues.slice(0, 16); let i = index">
           <div>
             <!-- <label for="buccalLeft{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Left</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthLingualLeft"
-              id="buccalLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthLingualLeft" id="buccalLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)" />
           </div>
           <div>
             <!-- <label for="buccalCenter{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Center</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthLingualCenter"
-              id="buccalCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthLingualCenter" id="buccalCenter{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)" />
           </div>
           <div>
             <!-- <label for="buccalRight{{value.toothNumber}}">Tooth {{value.toothNumber}} Buccal Right</label> -->
-            <input
-              type="number"
-              [(ngModel)]="value.pocketDepthLingualRight"
-              id="buccalRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.pocketDepthLingualRight" id="buccalRight{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" (change)="calculateCAL(value)" />
           </div>
         </td>
       </tr>
@@ -418,31 +343,18 @@
         <td>GM</td>
         <td *ngFor="let value of gmValues.slice(0, 16); let i = index">
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginLingualLeft"
-              id="gmLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualLeft" id="gmLingualLeft{{ value.toothNumber }}"
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" (change)="calculateCAL(value)" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginLingualCenter"
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualCenter"
               id="gmLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'"
-              (change)="calculateCAL(value)"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" (change)="calculateCAL(value)" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.gingivalMarginLingualRight"
-              id="gmLingualRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
-              (change)="calculateCAL(value)"
-            />
+            <input type="number" [(ngModel)]="value.gingivalMarginLingualRight"
+              id="gmLingualRight{{ value.toothNumber }}" [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
+              (change)="calculateCAL(value)" />
           </div>
         </td>
       </tr>
@@ -451,28 +363,19 @@
         <td>CAL</td>
         <td *ngFor="let value of calValues.slice(0, 16); let i = index">
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelLingualLeft"
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualLeft"
               id="calLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelLingualCenter"
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualCenter"
               id="calLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.clinicalAttachmentLevelLingualRight"
+            <input type="number" [(ngModel)]="value.clinicalAttachmentLevelLingualRight"
               id="calLingualRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" />
           </div>
         </td>
       </tr>
@@ -482,28 +385,19 @@
         <td>MGJ</td>
         <td *ngFor="let value of mgjValues.slice(0, 16); let i = index">
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionLingualLeft"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualLeft"
               id="mucogingivalJunctionLingualLeft{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Left'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionLingualCenter"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualCenter"
               id="mucogingivalJunctionLingualCenter{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Center'" />
           </div>
           <div>
-            <input
-              type="number"
-              [(ngModel)]="value.mucogingivalJunctionLingualRight"
+            <input type="number" [(ngModel)]="value.mucogingivalJunctionLingualRight"
               id="mucogingivalJunctionLingualRight{{ value.toothNumber }}"
-              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'"
-            />
+              [placeholder]="'Tooth ' + value.toothNumber + ' Lingual Right'" />
           </div>
         </td>
       </tr>
