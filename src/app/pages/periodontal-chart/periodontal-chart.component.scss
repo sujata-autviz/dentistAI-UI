@@ -58,6 +58,7 @@
     // top: 0
     font-weight: normal;
     padding: 24px;
+    width: 140px;
   }
 
   tbody tr td {
@@ -260,4 +261,30 @@
       background: #1E1E1E;
     }
   }
+}
+
+.align-td-row {
+  display: inline;
+  text-align: center;
+  white-space: nowrap;
+
+  input {
+    width: 40px;
+    display: inline;
+    text-align: center;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+
+
+.animated-recording {
+  width: 20px;
+  height: 20px;
+  // max-width: 20px;
+  color: #1E1E1E;
 }
