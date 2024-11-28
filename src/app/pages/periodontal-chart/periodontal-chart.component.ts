@@ -18,7 +18,7 @@ import { NotificationsService } from '../../core/services/notifications.service'
   styleUrl: './periodontal-chart.component.scss'
 })
 export class PeriodontalChartComponent extends BaseDestroyCompoent implements OnInit {
-
+  isEditMode: boolean = false; 
   // patientId: string | null = null;
   patientId = '6745601e5e34594ff9d75afb';
   periodontalChart: PeriodontalChart | undefined
@@ -55,7 +55,7 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   }
   generatePdValues() {
     this.pdValues = []; // Reset the array before pushing values
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 32; i++) {
       this.pdValues.push({
         toothNumber: i,
         pocketDepthBuccalLeft: 0,
@@ -72,7 +72,7 @@ export class PeriodontalChartComponent extends BaseDestroyCompoent implements On
   // Generate Gingival Margin Values
 generateGmValues() {
   this.gmValues = []; // Reset the array before pushing values
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 32; i++) {
     this.gmValues.push({
       toothNumber: i,
       gingivalMarginBuccalLeft: 0,
@@ -88,7 +88,7 @@ generateGmValues() {
 // Generate Clinical Attachment Level Values
 generateCalValues() {
   this.calValues = []; // Reset the array before pushing values
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 32; i++) {
     this.calValues.push({
       toothNumber: i,
       clinicalAttachmentLevelBuccalLeft: 0,
@@ -104,7 +104,7 @@ generateCalValues() {
 // Generate Bleeding Values
 generateBleedingValues() {
   this.bleedingValues = []; // Reset the array before pushing values
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 32; i++) {
     this.bleedingValues.push({
       toothNumber: i,
       isBleedingBuccalLeft: false,
@@ -120,7 +120,7 @@ generateBleedingValues() {
 // Generate Suppuration Values
 generateSuppurationValues() {
   this.suppurationValues = []; // Reset the array before pushing values
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 32; i++) {
     this.suppurationValues.push({
       toothNumber: i,
       isSuppurationBuccalLeft: false,
@@ -135,7 +135,7 @@ generateSuppurationValues() {
 
 generateMgjValues() {
   this.mgjValues = []; // Reset the array before pushing values
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 32; i++) {
     this.mgjValues.push({
       toothNumber: i,
      mucogingivalJunctionBuccalLeft: 0,
@@ -249,12 +249,12 @@ generateMgjValues() {
       this.suppurationValues.sort((a, b) => a.toothNumber - b.toothNumber);
       this.mgjValues.sort((a, b) => a.toothNumber - b.toothNumber);
     
-      this.pdValues = this.pdValues.slice(0, 16);
-      this.gmValues = this.gmValues.slice(0, 16);
-      this.calValues = this.calValues.slice(0, 16);
-      this.bleedingValues = this.bleedingValues.slice(0, 16);
-      this.suppurationValues = this.suppurationValues.slice(0, 16);
-      this.mgjValues = this.mgjValues.slice(0, 16);
+      this.pdValues = this.pdValues.slice(0, 32);
+      this.gmValues = this.gmValues.slice(0, 32);
+      this.calValues = this.calValues.slice(0, 32);
+      this.bleedingValues = this.bleedingValues.slice(0, 32);
+      this.suppurationValues = this.suppurationValues.slice(0, 32);
+      this.mgjValues = this.mgjValues.slice(0, 32);
     }
     
     calculateCAL(value: any): void {
@@ -507,11 +507,17 @@ saveChart() {
     return 0; // or false, depending on your logic
 }
 
-clearAll(){
-
+clearAll() {
+  debugger
+  this.generatePdValues(); // Reset to default values
+  this.generateGmValues();
+  this.generateCalValues();
+  this.generateBleedingValues();
+  this.generateSuppurationValues();
+  this.generateMgjValues();
 }
-edit(){
-
+toggleEdit() {
+  this.isEditMode = !this.isEditMode;
 }
 newReport(){
 
