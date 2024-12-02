@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PeriodontalChart } from '../../interfaces/periodontal-chart';
-import { Tooth } from '../../interfaces/tooth';
+import { AddOrUpdateTeethDto, Tooth } from '../../interfaces/tooth';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -39,9 +39,15 @@ export class PeriodontalChartService {
   }
 
   // Add or update teeth
-  addOrUpdateTeeth(patientId: string, teeth: Tooth[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/AddOrUpdateTeeth/${patientId}`, teeth);
-  }
+  // addOrUpdateTeeth(patientId: string, teeth: Tooth[]): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/AddOrUpdateTeeth/${patientId}`, teeth);
+  // }
+  addOrUpdateTeeth(data: AddOrUpdateTeethDto): Observable<any> {
+    const url = `${this.apiUrl}/AddOrUpdateTeeth`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  
+    return this.http.post(url, data, { headers });
+  }
 }
+
+

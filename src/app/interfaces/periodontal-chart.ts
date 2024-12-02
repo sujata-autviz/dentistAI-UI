@@ -16,3 +16,24 @@ export interface PeriodontalChartDto {
     isDeleted: boolean; // Indicates if the chart is deleted
     teeth: Tooth[]; // List of teeth details
 }
+
+export interface PatientData {
+    toothNumber? : number;
+    Distal_Buccal?: string | null;
+    Buccal?: string | null;
+    Mesial_Buccal?: string | null;
+    Distal_Lingual?: string | null;
+    Lingual?: string | null;
+    Mesial_Lingual?: string | null;
+    Distal_Facial?: string | null;
+    Facial?: string | null;
+    Mesial_Facial?: string | null;
+    Distal_Palatal?: string | null;
+    Palatal?: string | null;
+    Mesial_Palatal?: string | null;
+  }
+  
+  export interface Patient {
+    [key: number]: PatientData;
+  }
+  

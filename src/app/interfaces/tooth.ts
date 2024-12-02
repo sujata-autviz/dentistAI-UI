@@ -1,26 +1,38 @@
 // src/app/models/tooth.model.ts
 export interface Tooth {
-  tenantId: string; // Identifier for multi-tenancy
-  chartId: string; // Reference to the periodontal chart
+  // tenantId: string; // Identifier for multi-tenancy
+  // chartId: string; // Reference to the periodontal chart
   toothNumber: number; // E.g., 19, 32
-  pocketDepthBuccalLeft?: number;
-  pocketDepthBuccalCenter?: number;
-  pocketDepthBuccalRight?: number;
-  pocketDepthLingualLeft?: number;
-  pocketDepthLingualCenter?: number;
-  pocketDepthLingualRight?: number;
-  gingivalMarginBuccalLeft?: number;
-  gingivalMarginBuccalCenter?: number;
-  gingivalMarginBuccalRight?: number;
-  gingivalMarginLingualLeft?: number;
-  gingivalMarginLingualCenter?: number;
-  gingivalMarginLingualRight?: number;
-  clinicalAttachmentLevelBuccalLeft?: number;
-  clinicalAttachmentLevelBuccalCenter?: number;
-  clinicalAttachmentLevelBuccalRight?: number;
-  clinicalAttachmentLevelLingualLeft?: number;
-  clinicalAttachmentLevelLingualCenter?: number;
-  clinicalAttachmentLevelLingualRight?: number;
+   // Properties for teeth 1-5, 12-21, 28-32
+   distalBuccal?: number | null | undefined;
+   buccal?: number | null | undefined;
+   mesialBuccal?: number | null | undefined;
+   distalLingual?: number | null | undefined;
+   lingual?: number | null | undefined;
+   mesialLingual?: number | null | undefined;
+ 
+   // Properties for teeth 6-11, 22-27
+   distalFacial?: number | null | undefined;
+   facial?: number | null | undefined;
+   mesialFacial?: number | null | undefined;
+   distalPalatial?: number | null | undefined;
+   palatial?: number | null | undefined;
+   mesialPalatial?: number | null | undefined;
+
+   gingivalMarginBuccalLeft?: number | null;
+   gingivalMarginBuccalCenter?: number | null;
+   gingivalMarginBuccalRight?: number | null;
+   gingivalMarginLingualLeft?: number | null;
+   gingivalMarginLingualCenter?: number | null;
+   gingivalMarginLingualRight?: number | null; 
+
+   clinicalAttachmentLevelBuccalLeft?: number | null;
+  clinicalAttachmentLevelBuccalCenter?: number | null;
+  clinicalAttachmentLevelBuccalRight?: number | null;
+  clinicalAttachmentLevelLingualLeft?: number | null;
+  clinicalAttachmentLevelLingualCenter?: number | null;
+  clinicalAttachmentLevelLingualRight?: number | null;
+
   isBleedingBuccalLeft: boolean;
   isBleedingBuccalCenter: boolean;
   isBleedingBuccalRight: boolean;
@@ -33,12 +45,13 @@ export interface Tooth {
   isSuppurationLingualLeft: boolean;
   isSuppurationLingualCenter: boolean;
   isSuppurationLingualRight: boolean;
-  mucogingivalJunctionBuccalLeft?: number;
-  mucogingivalJunctionBuccalCenter?: number;
-  mucogingivalJunctionBuccalRight?: number;
-  mucogingivalJunctionLingualLeft?: number;
-  mucogingivalJunctionLingualCenter?: number;
-  mucogingivalJunctionLingualRight?: number;
+
+  mucogingivalJunctionBuccalLeft?: number | null;
+  mucogingivalJunctionBuccalCenter?: number | null;
+  mucogingivalJunctionBuccalRight?: number | null;
+  mucogingivalJunctionLingualLeft?: number | null;
+  mucogingivalJunctionLingualCenter?: number | null;
+  mucogingivalJunctionLingualRight?: number | null;
   mobilityGrade?: number; // 1, 2, 3
   furcationGrade?: number;
   isMissingTooth: boolean;
@@ -48,33 +61,49 @@ export interface Tooth {
 // Define the interface for each tooth's pocket depth values
 export interface PocketDepth {
   toothNumber: number;
-  pocketDepthBuccalLeft: number | undefined;
-  pocketDepthBuccalCenter: number | undefined;
-  pocketDepthBuccalRight: number | undefined;
-  pocketDepthLingualLeft: number | undefined;
-  pocketDepthLingualCenter: number | undefined;
-  pocketDepthLingualRight: number | undefined;
+
+   // Properties for teeth 1-5, 12-21, 28-32
+   distalBuccal?: number | null | undefined;
+   buccal?: number | null | undefined;
+   mesialBuccal?: number | null | undefined;
+   distalLingual?: number | null | undefined;
+   lingual?: number | null | undefined;
+   mesialLingual?: number | null | undefined;
+ 
+   // Properties for teeth 6-11, 22-27
+   distalFacial?: number | null | undefined;
+   facial?: number | null | undefined;
+   mesialFacial?: number | null | undefined;
+   distalPalatial?: number | null | undefined;
+   palatial?: number | null | undefined;
+   mesialPalatial?: number | null | undefined;
+  // pocketDepthBuccalLeft: number | undefined;
+  // pocketDepthBuccalCenter: number | undefined;
+  // pocketDepthBuccalRight: number | undefined;
+  // pocketDepthLingualLeft: number | undefined;
+  // pocketDepthLingualCenter: number | undefined;
+  // pocketDepthLingualRight: number | undefined;
   mobilityGrade?: number;
 }
 
 export interface GingivalMargin {
   toothNumber: number;
-  gingivalMarginBuccalLeft?: number;
-  gingivalMarginBuccalCenter?: number;
-  gingivalMarginBuccalRight?: number;
-  gingivalMarginLingualLeft?: number;
-  gingivalMarginLingualCenter?: number;
-  gingivalMarginLingualRight?: number;
+  gingivalMarginBuccalLeft?: number | null;
+  gingivalMarginBuccalCenter?: number | null;
+  gingivalMarginBuccalRight?: number | null;
+  gingivalMarginLingualLeft?: number | null;
+  gingivalMarginLingualCenter?: number | null;
+  gingivalMarginLingualRight?: number | null;
 }
 
 export interface clinicalAttachmentLevel {
   toothNumber: number;
-  clinicalAttachmentLevelBuccalLeft?: number;
-  clinicalAttachmentLevelBuccalCenter?: number;
-  clinicalAttachmentLevelBuccalRight?: number;
-  clinicalAttachmentLevelLingualLeft?: number;
-  clinicalAttachmentLevelLingualCenter?: number;
-  clinicalAttachmentLevelLingualRight?: number;
+  clinicalAttachmentLevelBuccalLeft?: number | null;
+  clinicalAttachmentLevelBuccalCenter?: number | null;
+  clinicalAttachmentLevelBuccalRight?: number | null;
+  clinicalAttachmentLevelLingualLeft?: number | null;
+  clinicalAttachmentLevelLingualCenter?: number | null;
+  clinicalAttachmentLevelLingualRight?: number | null;
 }
 
 export interface Bleeding {
@@ -99,10 +128,18 @@ export interface Suppuration {
 
 export interface MucogingivalJunction {
   toothNumber: number;
-  mucogingivalJunctionBuccalLeft?: number;
-  mucogingivalJunctionBuccalCenter?: number;
-  mucogingivalJunctionBuccalRight?: number;
-  mucogingivalJunctionLingualLeft?: number;
-  mucogingivalJunctionLingualCenter?: number;
-  mucogingivalJunctionLingualRight?: number;
+  mucogingivalJunctionBuccalLeft?: number | null;
+  mucogingivalJunctionBuccalCenter?: number | null;
+  mucogingivalJunctionBuccalRight?: number | null;
+  mucogingivalJunctionLingualLeft?: number | null;
+  mucogingivalJunctionLingualCenter?: number | null;
+  mucogingivalJunctionLingualRight?: number | null;
+}
+
+
+export interface AddOrUpdateTeethDto {
+  patientId: string;
+  tenantId: string;
+  chartId?: string | null;
+  teeth: Tooth[];
 }
