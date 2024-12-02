@@ -13,7 +13,8 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   private apiUrl = `${environment.baseUrl}/api/Authentication`; // Replace with your API URL
-
+  private loggedInSubject = new BehaviorSubject<boolean>(false);
+  public loggedIn$ = this.loggedInSubject.asObservable();
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -60,14 +61,16 @@ export class AuthService {
       .pipe(
         map((response: { body: any; }) => {
           const user = response.body;
-          if (user && user.token) {
-            this.setTokenCookie(user);
-            this.sessionService.getCurrentUser().subscribe({
-              next: (user) => console.log('Current user:', user),
-              error: (error) => console.error('Error fetching current user:', error)
-            });
+          if (user && user.data.token) {        
+            this.setTokenCookie(user.data);
+            this.setTenantCookie(user.data.user);
+            // this.sessionService.getCurrentUser().subscribe({
+            //   next: (user) => console.log('Current user:', user),
+            //   error: (error) => console.error('Error fetching current user:', error)
+            // });
             this.currentUserSubject.next(user);
           }
+          this.loggedInSubject.next(true);
           return user;
         }),
         catchError(error => {
@@ -80,9 +83,12 @@ export class AuthService {
         })
       );
   }
-  
+  // login(loginDto: LoginDto): Observable<LoginResponseDto> {
+  //   return this.http.post<LoginResponseDto>(`${this.apiUrl}/Login`, loginDto);
+  // }
 
   logout(): void {
+    this.loggedInSubject.next(false);
     this.removeTokenCookie();
     this.currentUserSubject.next(null);
     this.sessionService.clearSession();
@@ -169,9 +175,14 @@ export class AuthService {
     expirationDate.setDate(expirationDate.getDate() + 7);
     document.cookie = `dentistAuth_token=${user.token}; expires=${expirationDate.toUTCString()}; userName=${user.userName}; path=/; SameSite=Strict; Secure`;
   }
-
+  private setTenantCookie(user: any): void {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7);
+    document.cookie = `dentist_tenantId=${user.tenantId}; expires=${expirationDate.toUTCString()}; userName=${user.userName}; path=/; SameSite=Strict; Secure`;
+  }
   private removeTokenCookie(): void {
     document.cookie = 'dentistAuth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict; Secure';
+    document.cookie = 'dentist_tenantId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict; Secure';
   }
 
   private getUserFromCookie(): any {

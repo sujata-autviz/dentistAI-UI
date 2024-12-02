@@ -21,6 +21,7 @@ import { SpeechRecognitionService } from '../../core/services/speech-recognition
 import { VoiceRecognitionRequest } from '../../interfaces/voice-recognition-request';
 import { FormsModule } from '@angular/forms';
 import { NotificationsService } from '../../core/services/notifications.service';
+import { SignalRService } from '../../core/services/signalR.service';
 
 @Component({
   selector: 'app-periodontal-chart',
@@ -35,19 +36,19 @@ export class PeriodontalChartComponent
 {
   addOrUpdateTeethDto: AddOrUpdateTeethDto | undefined 
   isEditMode: boolean = false;
-  distalBuccal: number | undefined;
-  buccal: number | undefined;
-  mesialBuccal: number | undefined;
-  distalLingual: number | undefined;
-  lingual: number | undefined;
-  mesialLingual: number | undefined;
+  distalBuccal: number | null | undefined;
+  buccal: number | null | undefined;
+  mesialBuccal: number | null | undefined;
+  distalLingual: number | null | undefined;
+  lingual: number | null | undefined;
+  mesialLingual: number | null | undefined;
 
-  distalFacial: number | undefined;
-  facial: number | undefined;
-  mesialFacial: number | undefined;
-  distalPalatial: number | undefined;
-  palatial: number | undefined;
-  mesialPalatial: number | undefined;
+  distalFacial: number | null | undefined;
+  facial: number | null | null | undefined;
+  mesialFacial: number | null | undefined;
+  distalPalatial: number | null | undefined;
+  palatial: number | null | undefined;
+  mesialPalatial: number | null | undefined;
   // patientId: string | null = null;
   patientId = '6749666f2b66730c98856dbb';
   periodontalChart: PeriodontalChart | undefined;
@@ -70,9 +71,17 @@ export class PeriodontalChartComponent
     private _periodontalChartService: PeriodontalChartService,
     private speechService: SpeechRecognitionService,
     private notificationService: NotificationsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private signalService: SignalRService
   ) {
     super();
+    this.signalService.getNotifications().subscribe((message: string) => {
+      if (message !== null) {
+        this.transcript = this.transcript.concat(message);
+        this.processTranscript(message);
+      }
+    });
+    
   }
   ngOnInit(): void {
    
@@ -83,6 +92,8 @@ export class PeriodontalChartComponent
     this.generateCalValues();
     this.generateSuppurationValues();
     this.generateMgjValues();
+  
+   
   }
   generatePdValues() {
     this.pdValues = []; // Reset the array before pushing values
@@ -143,12 +154,12 @@ export class PeriodontalChartComponent
     for (let i = 1; i <= 32; i++) {
       this.calValues.push({
         toothNumber: i,
-        clinicalAttachmentLevelBuccalLeft: 0,
-        clinicalAttachmentLevelBuccalCenter: 0,
-        clinicalAttachmentLevelBuccalRight: 0,
-        clinicalAttachmentLevelLingualLeft: 0,
-        clinicalAttachmentLevelLingualCenter: 0,
-        clinicalAttachmentLevelLingualRight: 0,
+        clinicalAttachmentLevelBuccalLeft: null,
+        clinicalAttachmentLevelBuccalCenter: null,
+        clinicalAttachmentLevelBuccalRight: null,
+        clinicalAttachmentLevelLingualLeft: null,
+        clinicalAttachmentLevelLingualCenter: null,
+        clinicalAttachmentLevelLingualRight: null,
       });
     }
   }
@@ -190,12 +201,12 @@ export class PeriodontalChartComponent
     for (let i = 1; i <= 32; i++) {
       this.mgjValues.push({
         toothNumber: i,
-        mucogingivalJunctionBuccalLeft: 0,
-        mucogingivalJunctionBuccalCenter: 0,
-        mucogingivalJunctionBuccalRight: 0,
-        mucogingivalJunctionLingualLeft: 0,
-        mucogingivalJunctionLingualCenter: 0,
-        mucogingivalJunctionLingualRight: 0,
+        mucogingivalJunctionBuccalLeft: null,
+        mucogingivalJunctionBuccalCenter: null,
+        mucogingivalJunctionBuccalRight: null,
+        mucogingivalJunctionLingualLeft: null,
+        mucogingivalJunctionLingualCenter: null,
+        mucogingivalJunctionLingualRight: null,
       });
     }
   }
@@ -500,25 +511,25 @@ export class PeriodontalChartComponent
         // pocketDepthLingualCenter: pd.pocketDepthLingualCenter,
         // pocketDepthLingualRight: pd.pocketDepthLingualRight,
 
-        gingivalMarginBuccalLeft: gm?.gingivalMarginBuccalLeft || 0,
-        gingivalMarginBuccalCenter: gm?.gingivalMarginBuccalCenter || 0,
-        gingivalMarginBuccalRight: gm?.gingivalMarginBuccalRight || 0,
-        gingivalMarginLingualLeft: gm?.gingivalMarginLingualLeft || 0,
-        gingivalMarginLingualCenter: gm?.gingivalMarginLingualCenter || 0,
-        gingivalMarginLingualRight: gm?.gingivalMarginLingualRight || 0,
+        gingivalMarginBuccalLeft: gm?.gingivalMarginBuccalLeft || null,
+        gingivalMarginBuccalCenter: gm?.gingivalMarginBuccalCenter || null,
+        gingivalMarginBuccalRight: gm?.gingivalMarginBuccalRight || null,
+        gingivalMarginLingualLeft: gm?.gingivalMarginLingualLeft || null,
+        gingivalMarginLingualCenter: gm?.gingivalMarginLingualCenter || null,
+        gingivalMarginLingualRight: gm?.gingivalMarginLingualRight || null,
 
         clinicalAttachmentLevelBuccalLeft:
-          cal?.clinicalAttachmentLevelBuccalLeft || 0,
+          cal?.clinicalAttachmentLevelBuccalLeft || null,
         clinicalAttachmentLevelBuccalCenter:
-          cal?.clinicalAttachmentLevelBuccalCenter || 0,
+          cal?.clinicalAttachmentLevelBuccalCenter || null,
         clinicalAttachmentLevelBuccalRight:
-          cal?.clinicalAttachmentLevelBuccalRight || 0,
+          cal?.clinicalAttachmentLevelBuccalRight || null,
         clinicalAttachmentLevelLingualLeft:
-          cal?.clinicalAttachmentLevelLingualLeft || 0,
+          cal?.clinicalAttachmentLevelLingualLeft || null,
         clinicalAttachmentLevelLingualCenter:
-          cal?.clinicalAttachmentLevelLingualCenter || 0,
+          cal?.clinicalAttachmentLevelLingualCenter || null,
         clinicalAttachmentLevelLingualRight:
-          cal?.clinicalAttachmentLevelLingualRight || 0,
+          cal?.clinicalAttachmentLevelLingualRight || null,
 
         isBleedingBuccalLeft: bleeding?.isBleedingBuccalLeft || false,
         isBleedingBuccalCenter: bleeding?.isBleedingBuccalCenter || false,
@@ -540,17 +551,17 @@ export class PeriodontalChartComponent
           suppuration?.isSuppurationLingualRight || false,
 
         mucogingivalJunctionBuccalLeft:
-          mgj?.mucogingivalJunctionBuccalLeft || 0,
+          mgj?.mucogingivalJunctionBuccalLeft || null,
         mucogingivalJunctionBuccalCenter:
-          mgj?.mucogingivalJunctionBuccalCenter || 0,
+          mgj?.mucogingivalJunctionBuccalCenter || null,
         mucogingivalJunctionBuccalRight:
-          mgj?.mucogingivalJunctionBuccalRight || 0,
+          mgj?.mucogingivalJunctionBuccalRight || null,
         mucogingivalJunctionLingualLeft:
-          mgj?.mucogingivalJunctionLingualLeft || 0,
+          mgj?.mucogingivalJunctionLingualLeft || null,
         mucogingivalJunctionLingualCenter:
-          mgj?.mucogingivalJunctionLingualCenter || 0,
+          mgj?.mucogingivalJunctionLingualCenter || null,
         mucogingivalJunctionLingualRight:
-          mgj?.mucogingivalJunctionLingualRight || 0,
+          mgj?.mucogingivalJunctionLingualRight || null,
       };
     });
 
@@ -599,7 +610,266 @@ const input: AddOrUpdateTeethDto = {
             this.transcript = response.transcript;
             // Store the transcript
             console.log('Transcript:', this.transcript);
-            this.processTranscript(this.transcript);
+            this.processTranscript({
+              "patient1": {
+                  "1": {
+                      "Distal_Buccal": "2mm",
+                      "Buccal": "0.3mm",
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": "5mm",
+                      "Lingual": null,
+                      "Mesial_Lingual": "2mm"
+                  },
+                  "2": {
+                      "Distal_Buccal": "1.3mm",
+                      "Buccal": null,
+                      "Mesial_Buccal": "3mm",
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": "4mm"
+                  },
+                  "3": {
+                      "Distal_Buccal": "0.9mm",
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": "6mm"
+                  },
+                  "4": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "5": {
+                      "Distal_Buccal": "2mm",
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": "3mm",
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "6": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "7": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": "4.3mm",
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "8": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": "3.4mm",
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "9": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "10": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "11": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "12": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "13": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "14": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "15": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "16": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "17": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "18": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "19": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "20": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "21": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "22": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "23": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "24": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "25": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": null,
+                      "Mesial_Palatal": null
+                  },
+                  "26": {
+                      "Distal_Facial": null,
+                      "Facial": null,
+                      "Mesial_Facial": null,
+                      "Distal_Palatal": null,
+                      "Palatal": "4.12mm",
+                      "Mesial_Palatal": null
+                  },
+                  "27": {
+                      "Distal_Facial": 7,
+                      "Facial": 6,
+                      "Mesial_Facial": 5,
+                      "Distal_Palatal": 4,
+                      "Palatal": 3,
+                      "Mesial_Palatal": 2
+                  },
+                  "28": {
+                      "Distal_Buccal": 1,
+                      "Buccal": 2,
+                      "Mesial_Buccal": 3,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "29": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "30": {
+                      "Distal_Buccal": null,
+                      "Buccal": null,
+                      "Mesial_Buccal": null,
+                      "Distal_Lingual": null,
+                      "Lingual": null,
+                      "Mesial_Lingual": null
+                  },
+                  "31": {
+                      "Distal_Buccal": 4,
+                      "Buccal": 3,
+                      "Mesial_Buccal": 2,
+                      "Distal_Lingual": 6,
+                      "Lingual": 3,
+                      "Mesial_Lingual": 4
+                  },
+                  "32": {
+                      "Distal_Buccal": 3,
+                      "Buccal": 3,
+                      "Mesial_Buccal": 3,
+                      "Distal_Lingual": 3,
+                      "Lingual": 3,
+                      "Mesial_Lingual": 3
+                  }
+              }
+          });
             this.isRecording = false; // Process the transcript
           } else {
             this.isRecording = false;
@@ -613,22 +883,44 @@ const input: AddOrUpdateTeethDto = {
       );
     }
   }
-  processTranscript(transcript: string): void {
-    const lines = transcript.toLowerCase().split('.');
-    for (const line of lines) {
-      const toothMatches = line.match(
-        /(?:tooth|teeth)\s+(?:number\s+)?(\d+(?:\s*,\s*\d+)*)/i
-      );
-      if (toothMatches) {
-        const toothNumbers = toothMatches[1]
-          .split(',')
-          .map((num) => parseInt(num.trim(), 10));
-        for (const toothNumber of toothNumbers) {
-          this.updateToothData(toothNumber, line);
+
+
+  processTranscript(transcript: any) {
+    const patientData = JSON.parse(transcript)
+    for (const toothNumber in patientData.patient) {
+      if (patientData.patient.hasOwnProperty(toothNumber)) {
+        const tooth = patientData.patient[toothNumber];
+        const pdIndex = this.pdValues.findIndex((item) => item.toothNumber === +toothNumber);
+  
+        if (pdIndex !== -1) {
+          this.pdValues[pdIndex].distalBuccal = this.removeMM(tooth.Distal_Buccal);
+          this.pdValues[pdIndex].buccal = this.removeMM(tooth.Buccal);
+          this.pdValues[pdIndex].mesialBuccal = this.removeMM(tooth.Mesial_Buccal);
+          this.pdValues[pdIndex].distalLingual = this.removeMM(tooth.Distal_Lingual);
+          this.pdValues[pdIndex].lingual = this.removeMM(tooth.Lingual);
+          this.pdValues[pdIndex].mesialLingual = this.removeMM(tooth.Mesial_Lingual);
+          this.pdValues[pdIndex].distalFacial = this.removeMM(tooth.Distal_Facial);
+          this.pdValues[pdIndex].facial = this.removeMM(tooth.Facial);
+          this.pdValues[pdIndex].mesialFacial = this.removeMM(tooth.Mesial_Facial);
+          this.pdValues[pdIndex].distalPalatial = this.removeMM(tooth.Distal_Palatal);
+          this.pdValues[pdIndex].palatial = this.removeMM(tooth.Palatal);
+          this.pdValues[pdIndex].mesialPalatial = this.removeMM(tooth.Mesial_Palatal);
         }
       }
     }
+  
   }
+  
+  // Helper function to remove "mm" and ensure the value is a valid nullable integer
+  removeMM(value: string | number): number {
+    if (typeof value === 'string') {
+      // Remove "mm" and convert to number, defaulting to 0 if invalid
+      return parseFloat(value.replace('mm', '').trim()) || 0;
+    }
+    return value || 0;
+  }
+  
+
 
   private updateToothData(toothNumber: number, data: string): void {
     const pd = this.pdValues.find((item) => item.toothNumber === toothNumber);
