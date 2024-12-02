@@ -11,8 +11,13 @@ module.exports = {
             colors: {
                 textBlack: '#1E1E1E',
                 textDanger: '#ED1B24',
+            },
+
+            boxShadow: {
+                'btn-shadow': '0px 1px 2px rgba(16, 24, 40, 0.05)',
             }
         },
     },
     plugins: [],
 }
+
