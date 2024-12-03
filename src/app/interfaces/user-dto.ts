@@ -5,6 +5,7 @@ export interface UserDto {
     email: string;
     userName: string;
     profileImage?: string;
+    tenantId: string;
     role: string;
   }
 

@@ -1,97 +1,185 @@
 import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
 
+import { PatientService } from '../../core/services/patient.service';
+import { SessionService } from '../../core/services/session.service';
+import { UserDto } from '../../interfaces/user-dto';
+import { CommonModule, DatePipe } from '@angular/common';
+import { PaginatedResult } from '../../interfaces/paginated-result';
+import { Patient, PatientDto } from '../../interfaces/patient';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { NotificationsService } from '../../core/services/notifications.service';
+
 @Component({
   selector: 'app-patients',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, CommonModule, DialogModule, ButtonModule, FormsModule],
   templateUrl: './patients.component.html',
-  styleUrl: './patients.component.scss'
+  styleUrl: './patients.component.scss',
+  providers: [DatePipe],
 })
 export class PatientsComponent {
+  patients: PatientDto[] = [];
+  totalPatients: number = 0;
+  pageSize: number = 10;
+  pageNumber: number = 1;
+  patientDialogVisible: boolean = false;
+  isEditMode: boolean = false;
+  selectedPatient: PatientDto = {} as PatientDto;
+  user: UserDto | undefined;
+  selectDob: string = '';
+  searchTerm?: string;
+  nextPatientId: any;
 
-  products = [
-    {
-      "serialNo": 1,
-      "name": "John Doe",
-      "patientId": "P1001",
-      "dateOfBirth": "1985-07-12",
-      "mobile": "1234567890",
-      "edit": true
-    },
-    {
-      "serialNo": 2,
-      "name": "Jane Smith",
-      "patientId": "P1002",
-      "dateOfBirth": "1990-03-05",
-      "mobile": "9876543210",
-      "edit": true
-    },
-    {
-      "serialNo": 3,
-      "name": "Alice Brown",
-      "patientId": "P1003",
-      "dateOfBirth": "1992-11-22",
-      "mobile": "5556667777",
-      "edit": true
-    },
-    {
-      "serialNo": 4,
-      "name": "Bob White",
-      "patientId": "P1004",
-      "dateOfBirth": "1988-01-14",
-      "mobile": "4443332222",
-      "edit": true
-    },
-    {
-      "serialNo": 5,
-      "name": "Charlie Green",
-      "patientId": "P1005",
-      "dateOfBirth": "1980-06-30",
-      "mobile": "9998887777",
-      "edit": true
-    },
-    {
-      "serialNo": 6,
-      "name": "Diana Blue",
-      "patientId": "P1006",
-      "dateOfBirth": "1995-09-09",
-      "mobile": "6665554444",
-      "edit": true
-    },
-    {
-      "serialNo": 7,
-      "name": "Ethan Grey",
-      "patientId": "P1007",
-      "dateOfBirth": "1982-04-17",
-      "mobile": "3332221111",
-      "edit": true
-    },
-    {
-      "serialNo": 8,
-      "name": "Fiona Red",
-      "patientId": "P1008",
-      "dateOfBirth": "1989-08-23",
-      "mobile": "1112223333",
-      "edit": true
-    },
-    {
-      "serialNo": 9,
-      "name": "George Yellow",
-      "patientId": "P1009",
-      "dateOfBirth": "1997-12-01",
-      "mobile": "4445556666",
-      "edit": true
-    },
-    {
-      "serialNo": 10,
-      "name": "Hannah Pink",
-      "patientId": "P1010",
-      "dateOfBirth": "1991-02-15",
-      "mobile": "7778889999",
-      "edit": true
+  constructor(
+    private patientService: PatientService,
+    private sessionService: SessionService,
+    private notificationService: NotificationsService
+  ) {}
+
+  ngOnInit(): void {
+    this.sessionService.getCurrentUser().subscribe((res) => {
+      this.user = res.data;
+      console.log(this.user);
+      if (this.user) this.loadPatients();
+    });
+    this.loadPatients();
+  }
+  onSearch(value: any) {
+    if (value.target.value == null || value.target.value == '') {
+      this.searchTerm = undefined;
+    } else {
+      this.searchTerm = value.target.value?.trim();
     }
-  ]
+    this.loadPatients();
+  }
+  loadPatients(): void {
+    if (this.user) {
+      this.patientService
+        .getPatientsByDoctorIdsWithPagination(
+          [this.user.id],
+          this.user.tenantId,
+          this.pageNumber,
+          this.pageSize,
+          this.searchTerm
+        )
+        .subscribe(
+          (response: PaginatedResult<PatientDto>) => {
+            this.patients = response.patients.sort(); // Access patients array correctly
+            this.totalPatients = response.totalCount;
+            this.getNextPatientId(); // Total count from the paginated result
+          },
+          (error) => {
+            this.patients = []; // Access patients array correctly
+            this.totalPatients = 0;
+            console.error(error);
+          }
+        );
+    }
+  }
+  getNextPatientId() {
+    if (this.user)
+      this.patientService
+        .getNextPatientId(this.user?.tenantId, this.user.id)
+        .subscribe((res) => {
+          this.nextPatientId = res;
+        });
+  }
+  onPageChange(event: any): void {
+    const page = event.first / event.rows;
+    const limit = event.rows;
+    this.pageNumber = page + 1;
+    this.pageSize = limit;
+    this.loadPatients();
+  }
 
+  openAddPatientDialog(): void {
+    this.isEditMode = false;
+    this.selectedPatient = {} as PatientDto;
+    this.selectDob = ''; // Reset selected patient
+    this.selectedPatient.patientId = this.nextPatientId;
+    this.patientDialogVisible = true;
+  }
 
+  openEditPatientDialog(patient: PatientDto): void {
+    this.isEditMode = true;
+    this.selectedPatient = { ...patient };
+    this.selectDob = this.formatDate(this.selectedPatient.dateOfBirth); // Copy the patient data into selectedPatient
+    this.patientDialogVisible = true;
+  }
+
+  closeDialog(): void {
+    this.patientDialogVisible = false;
+  }
+
+  savePatient(): void {
+    if (this.user)
+      (this.selectedPatient.doctorId = this.user?.id),
+        (this.selectedPatient.tenantId = this.user?.tenantId);
+    this.selectedPatient.dateOfBirth = this.selectDob;
+    if (this.isEditMode) {
+      if (!this.selectedPatient?.id) {
+        this.notificationService.errorAlert('Patient ID is required');
+        return; // or handle the error as needed
+      }
+
+      this.patientService
+        .updatePatient(this.selectedPatient.id, this.selectedPatient)
+        .subscribe(
+          () => {
+            this.loadPatients();
+            this.closeDialog();
+            this.notificationService.successAlert(
+              'Patient updated successfully'
+            );
+          },
+          (err) => {}
+        );
+    } else {
+      this.patientService.addPatient(this.selectedPatient).subscribe({
+        next: (response) => {
+          if (response.success) {
+            // Show success message using PrimeNG message service
+            this.notificationService.successAlert(response.message);
+            this.patientDialogVisible = false;
+            this.isEditMode = false;
+            // Reset form or perform any other necessary actions
+          } else {
+            // Show failure message using PrimeNG message service
+            this.notificationService.warningAlert(response.message);
+          }
+        },
+        error: (error) => {
+          this.patientDialogVisible = false;
+          this.isEditMode = false;
+          this.notificationService.warningAlert(error.error.message);
+        },
+      });
+    }
+  }
+
+  formatDate(date: any): string {
+    // Ensure the date is a valid Date object
+    const dateObj = new Date(date);
+
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) {
+      throw new Error('Invalid date');
+    }
+
+    const year = dateObj.getFullYear();
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  isFormValid(): boolean {
+    return (
+      !!this.selectedPatient.name &&
+      !!this.selectedPatient.patientId &&
+      !!this.selectDob &&
+      !!this.selectedPatient.phone
+    );
+  }
 }

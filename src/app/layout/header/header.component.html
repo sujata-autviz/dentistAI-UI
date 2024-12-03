@@ -1,0 +1,87 @@
+<header
+  class="bg-white py-2 mb-3 px-3 d-flex justify-content-between mt-n2 custom-card header-bar"
+>
+  <div class="header-left d-flex align-items-center">
+    <h1 class="header-breadcrumb color-sec-900 fs-5 m-0">
+      {{ headerTitle }}
+    </h1>
+    <!-- <div class="global-src position-relative d-flex align-items-center">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" class="border-0" placeholder="Search">
+    </div> -->
+  </div>
+
+  <div class="header-right">
+    <div class="user-dropdown">
+      <div class="d-flex align-items-center">
+        <div class="user-img-container">
+          <img
+            [src]="
+              user?.profileImage
+                ? user?.profileImage
+                : 'https://png.pngitem.com/pimgs/s/150-1503945_transparent-user-png-default-user-image-png-png.png'
+            "
+            alt="user"
+          />
+        </div>
+        <div class="w-fit ms-2">
+          <h5 class="m-0 fs-14 fw-medium">{{ user?.userName }}</h5>
+        </div>
+
+        <button class="btn ps-2 ms-1 pe-0" (click)="toggleDropdown()">
+          <i
+            [ngClass]="
+              isDropdownOpen
+                ? 'fa-solid fa-chevron-up'
+                : 'fa-solid fa-chevron-down'
+            "
+          ></i>
+        </button>
+        @if(isDropdownOpen){
+        <div
+          class="custom-dropdown-menu custom-card"
+          [ngClass]="isDropdownOpen ? 'hide-menu ' : 'show-menu'"
+        >
+          <div class="menu-items-container">
+            <!-- <div class="menu-item py-2 px-3">
+      <a href="#" class="d-flex align-items-center gap-2">
+        <i class="fa-solid fa-user"></i>
+        My Profile
+      </a>
+    </div> -->
+
+            <div class="menu-item py-2 px-3">
+              <a
+                class="d-flex align-items-center gap-2 cursor-pointer"
+                (click)="resetPassword()"
+              >
+                <i class="fa-solid fa-lock"></i>
+                Password
+              </a>
+            </div>
+            <div class="menu-item py-2 px-3">
+              <a
+                class="d-flex align-items-center gap-2 cursor-pointer"
+                (click)="editProfile()"
+              >
+                <i class="fa-solid fa-user"></i>
+                Edit Profile
+              </a>
+            </div>
+
+            <div class="menu-item border-top py-2 px-3">
+              <a
+                class="d-flex align-items-center gap-2 cursor-pointer"
+                (click)="logout()"
+              >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</header>

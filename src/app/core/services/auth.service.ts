@@ -167,7 +167,7 @@ export class AuthService {
   }
 
   handleLoginRedirect(): void {
-    this.router.navigate(['/coupon-history']); 
+    this.router.navigate(['/home']); 
   }
 
   private setTokenCookie(user: any): void {

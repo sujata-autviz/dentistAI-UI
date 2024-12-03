@@ -1,0 +1,49 @@
+<div [class.collapsed]="isCollapsed" class="sidebar position-relative h-100">
+  <div class="logo-container d-flex align-items-center px-3 py-3" [ngClass]="{'justify-content-center ': isCollapsed}">
+    <img src="/assets/logo/logo-white.png" class="small-logo" alt="logo">
+    <span class="fs-4 fw-bold ms-2 text-white" *ngIf="!isCollapsed">Logo</span>
+  </div>
+
+  <ul class="menu-items main-menu-items px-2" [ngClass]="{'mr-2' : !isCollapsed}">
+    <li *ngFor="let item of menuItems" 
+        (click)="toggleSidebarOnMobileView(); handleMenuClick(item)" 
+        [class.active]="item.isActive"
+        [class.has-children]="item.children"
+        [class.expanded]="!item.isCollapsed && item.children"
+        class="rounded-3 overflow-hidden mb-2">
+
+      <a [routerLink]="item.route" 
+         [ngClass]="{'justify-content-center': isCollapsed}"
+         (click)="item.children && toggleSubmenu(item, $event)">
+        <div class="menu-list-container">
+          <i class="{{item.img}}"></i>
+        </div>
+        <span *ngIf="!isCollapsed" class="icon-label">{{ item.label }}</span>
+      </a>
+
+      <ul *ngIf="item.children && !isCollapsed && !item.isCollapsed" 
+          class="submenu" 
+          [@slideInOut]>
+
+        <li *ngFor="let child of item.children" 
+            [class.active]="child.isActive"
+            class="submenu-item"> <!-- Added class for submenu item -->
+          <a [routerLink]="child.route" class="d-flex align-items-center">
+            <i class="{{child.img}} me-2"></i>
+            <span>{{ child.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="sidebar-bottom-content d-flex"
+       [ngClass]="{'justify-content-center sidebar-bottom-content-collapse' : isCollapsed}">
+    <div class="d-flex w-100 align-items-center justify-content-between">
+      <button class="px-3 py-2 rounded-3 border-0 d-flex w-fit align-items-center gap-2 bg-white text-dark"
+              (click)="toggleSidebar()" [ngClass]="{'justify-content-center' : isCollapsed}">
+        <i class="{{ isCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left text-left' }}"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -28,7 +28,8 @@ export class LoginComponent extends BaseDestroyCompoent implements OnInit {
     private fb: FormBuilder,
     private _authService: AuthService,
     private _route: Router,
-    private notificationService : NotificationsService
+    private notificationService : NotificationsService,
+    private _cdr : ChangeDetectorRef
   ) {
     super();
     this.loginForm = this.fb.group({
@@ -44,11 +45,20 @@ export class LoginComponent extends BaseDestroyCompoent implements OnInit {
       const { email, password } = this.loginForm.value;
       this._authService.login(email, password).pipe((takeUntil(this.destroy$) , finalize(()=>{
       }))).subscribe({
-
         next: (response: LoginResponse) => {
-          this.loading = false;
+          this.loading = false;      
           this.notificationService.successToast("Login successful!")
-          this._route.navigate(['/home']); 
+          // this._route.navigateByUrl('/pages/home');
+          this._route.navigateByUrl('/pages/home').then(success => {
+            if (success) {
+              console.log('Navigation to /home was successful');
+            } else {
+              console.error('Navigation to /home failed');
+            }
+          });
+          
+          this._cdr.detectChanges();
+
         },
         error: (err) => {
           this.loading = false

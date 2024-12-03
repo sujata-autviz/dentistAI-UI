@@ -4,13 +4,15 @@ import { PeriodontalChartComponent } from './periodontal-chart/periodontal-chart
 import { PatientsComponent } from './patients/patients.component';
 import { AddPatientComponent } from './patients/add-patient/add-patient.component';
 import { EditPatientComponent } from './patients/edit-patient/edit-patient.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: PeriodontalChartComponent },
+
+  { path: 'home', component: PatientsComponent },
+  { path: 'periodontal', component: PeriodontalChartComponent },
   { path: 'patient-list', component: PatientsComponent },
   { path: 'add-patient', component: AddPatientComponent },
-  { path: 'home', component: EditPatientComponent }
+  { path: 'edit-patient', component: EditPatientComponent },
 
 ];
 

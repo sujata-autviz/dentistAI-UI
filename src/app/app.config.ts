@@ -8,6 +8,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes , withComponentInputBinding(), withHashLocation()), provideClientHydration(),provideAnimations()
+  providers: [provideRouter(routes , withComponentInputBinding()),provideAnimations()
     ,provideHttpClient(withFetch()),    provideHttpClient(withInterceptors([authInterceptor]))]
 };
+

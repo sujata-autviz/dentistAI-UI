@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable } from 'rxjs';
 import { UserDto } from '../../interfaces/user-dto';
 import { environment } from '../../environments/environment';
 import { User } from '../../interfaces/user';
@@ -19,9 +19,18 @@ export class SessionService {
   }
 
   // Get the current user's details
-  getCurrentUser(): Observable<{ success: boolean; message: string; data: UserDto }> {
-    return this.http.get<{ success: boolean; message: string; data: UserDto }>(
-      `${this.baseUrl}/CurrentUser`
+  // getCurrentUser(): Observable<{ success: boolean; message: string; data: UserDto }> {
+  //   return this.http.get<{ success: boolean; message: string; data: UserDto }>(
+  //     `${this.baseUrl}/CurrentUser`
+  //   );
+  // }
+
+  getCurrentUser(): Observable<any> {
+    return this.http.get('https://localhost:7185/api/Session/CurrentUser').pipe(
+      catchError((error) => {
+        console.error('Error occurred:', error);
+        throw error;  // Rethrow the error or handle it accordingly
+      })
     );
   }
 

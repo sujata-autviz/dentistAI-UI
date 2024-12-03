@@ -33,7 +33,4 @@ export interface PatientData {
     Mesial_Palatal?: string | null;
   }
   
-  export interface Patient {
-    [key: number]: PatientData;
-  }
   
