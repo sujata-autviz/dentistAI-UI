@@ -1,1 +1,58 @@
-<p>patients works!</p>
+<!-- title and input section -->
+
+<section class="container mx-auto mt-4">
+    <p-table [value]="products" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="caption">
+            <div class="flex justify-between items-end border-b border-[#E3DBDB]">
+                <h1 class="t-title">Recent Patients</h1>
+                <!-- Global src & Button  -->
+                <div class="flex items-center gap-4 pb-[10px]">
+                    <div class="relative h-fit w-fit">
+                        <img src="/assets/icons/src.svg" alt="Search Icon" class="absolute left-[14px] top-2 w-5 h-5">
+                        <input pInputText type="text" placeholder="Search Patient by Name or OPD ID"
+                            class="h-10 ps-[2.8rem] placeholder:text-sm placeholder:font-normal placeholder:leading-[16.59px] placeholder:text-[#4A4A4A] pe-9 rounded-lg bg-[#F2F2F2]" />
+                    </div>
+
+                    <button
+                        class="bg-textBlack text-white placeholder:text-white text-base w-fit transition-all ease-in-out py-2 px-[14px] hover:btn-shadow rounded-md flex items-center justify-center gap-2 font-semibold"><img
+                            src="/assets/icons/folder-add.svg" class="w-5 h-5" alt="Add Folder Icon">Add
+                        Patient</button>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Serial No.</th>
+                <th>Name</th>
+                <th>Patient ID</th>
+                <th>Date of Birth</th>
+                <th>Mobile</th>
+                <th>Edit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{ product.serialNo }}</td>
+                <td>{{ product.name }}</td>
+                <td>
+                    <span class="bg-[#F8F8F8] p-2 rounded-[4px] w-full block"> {{ product.patientId }}
+                    </span>
+                </td>
+                <td>
+                    <span class="bg-[#BA82CC] p-2 rounded-[4px] text-white">
+                        {{ product.dateOfBirth }}</span>
+                </td>
+                <td>
+                    <span class="bg-[#ED8796] p-2 rounded-[4px] text-white">{{ product.mobile }}</span>
+                </td>
+                <td>
+                    <div class="flex gap-2 items-center">
+                        <button class="w-5 h-5"><img src="/assets/icons/edit.svg" alt="Edit"></button>
+                        <button class="text-textBlack text-sm">Edit</button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>

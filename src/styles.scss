@@ -25,3 +25,86 @@
         }
     }
 }
+
+$text-color : #1E1E1E;
+$textDanger: #ED1B24;
+
+// table heading 
+.t-title {
+    font-size: 16px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: $text-color;
+    border-bottom: 1px solid transparent;
+    width: fit-content;
+    padding-bottom: 18px;
+    padding-left: 15px;
+    padding-right: 15px;
+    transition: all .3s ease-in-out;
+
+
+    &:hover {
+        border-color: $textDanger;
+    }
+}
+
+.p-datatable-header {
+    padding: 0;
+    padding-bottom: 22px;
+    background: none;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+    background: #F9F9FB;
+
+    /* Serial No. */
+    font-weight: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    color: #1E1E1E;
+    border: 1px solid #E3DBDB;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+    border: 1px solid #E3DBDB;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #1E1E1E;
+}
+
+// ----------
+.inputNlabel {
+    label {
+        color: $text-color;
+        margin-bottom: 6px;
+        text-transform: capitalize;
+    }
+
+    input {
+        width: 100%;
+        padding: 6px 12px;
+        color: $text-color;
+        border: 1px solid #eee;
+        border-radius: 6px;
+
+        &::placeholder {
+            color: #747474;
+        }
+
+        &:focus,
+        &:focus-visible {
+            // border: 0;
+            outline: 0;
+        }
+
+
+    }
+}
