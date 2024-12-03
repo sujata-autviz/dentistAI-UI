@@ -11,6 +11,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { NotificationsService } from '../../core/services/notifications.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patients',
@@ -36,7 +37,8 @@ export class PatientsComponent {
   constructor(
     private patientService: PatientService,
     private sessionService: SessionService,
-    private notificationService: NotificationsService
+    private notificationService: NotificationsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -182,4 +184,8 @@ export class PatientsComponent {
       !!this.selectedPatient.phone
     );
   }
+  navigateToPeriodontalChartList(patientId: string) {
+    this.router.navigate(['periodontal-chart-list'], { queryParams: { productId: patientId } });
+  }
+  
 }

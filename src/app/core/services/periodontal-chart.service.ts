@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PeriodontalChart } from '../../interfaces/periodontal-chart';
@@ -47,6 +47,14 @@ export class PeriodontalChartService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(url, data, { headers });
+  }
+
+  getChartsByPatientAndTenantId(patientId: string, tenantId: string): Observable<any> {
+    const params = new HttpParams()
+      .set('patientId', patientId)
+      .set('tenantId', tenantId);
+
+    return this.http.get<any>(`${this.apiUrl}/GetChartsByPatientAndTenantId`, { params });
   }
 }
 
