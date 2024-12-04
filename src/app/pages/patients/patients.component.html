@@ -1,4 +1,4 @@
-<section class="container mx-auto mt-4 px-5">
+<section>
   <!-- <p-table
     [value]="patients"
     [paginator]="true"
@@ -7,7 +7,6 @@
     (onPage)="onPageChange($event)"
     styleClass="p-datatable-gridlines"
   >{{totalPatients}} -->
-
   <p-table #dt1 [value]="patients" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
     [globalFilterFields]="['title', 'handle']"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} patients" [rowsPerPageOptions]="[10,25,50]"
@@ -18,8 +17,7 @@
         <div class="flex items-center gap-4 pb-[10px]">
           <div class="relative h-fit w-fit">
             <img src="/assets/icons/src.svg" alt="Search Icon" class="absolute left-[14px] top-2 w-5 h-5" />
-            <input (input)="onSearch($event)" pInputText type="text"
-            [(ngModel)]="searchTerm"
+            <input (input)="onSearch($event)" pInputText type="text" [(ngModel)]="searchTerm"
               placeholder="Search Patient by Name or OPD ID"
               class="h-10 w-[290px] ps-[2.8rem] text-sm focus:outline-none placeholder:text-sm placeholder:font-normal placeholder:leading-[16.59px] placeholder:text-[#4A4A4A] pe-6 rounded-lg bg-[#F2F2F2] " />
           </div>
@@ -40,7 +38,7 @@
         <th>Patient ID</th>
         <th>Date of Birth</th>
         <th>Mobile</th>
-        <th>Edit</th>
+        <th>Action</th>
       </tr>
     </ng-template>
 
@@ -49,7 +47,7 @@
         <td>{{ rowIndex + 1 }}</td>
         <td>{{ patient.name }}</td>
         <td>
-          <span class="bg-[#F8F8F8] p-2 rounded-[4px] w-full block">{{
+          <span class="bg-[#F8F8F8] px-2 py-[2.5px] rounded-[4px] w-full block">{{
             patient.patientId
             }}</span>
         </td>
@@ -59,22 +57,19 @@
           </span>
         </td>
         <td>
-          <span class="bg-[#ED8796] p-2 rounded-[4px] text-white">{{
+          <span class="bg-[#ED8796] px-2 py-[2.5px] rounded-[4px] text-white">{{
             patient.phone
             }}</span>
         </td>
         <td>
-          <div class="flex gap-2 items-center">
+          <div class="flex items-center gap-3">
             <button (click)="openEditPatientDialog(patient)" class="w-5 h-5">
               <img src="/assets/icons/edit.svg" alt="Edit" />
             </button>
-            <button class="text-textBlack text-sm">Edit</button>
-          </div>
-          <div class="flex gap-2 items-center">
+
             <button (click)="navigateToPeriodontalChartList(patient.id)" class="w-5 h-5">
-              <img src="/assets/icons/edit.svg" alt="Edit" />
+              <img src="/assets/icons/view.svg" alt="Edit" />
             </button>
-            <button class="text-textBlack text-sm">View</button>
           </div>
         </td>
       </tr>
