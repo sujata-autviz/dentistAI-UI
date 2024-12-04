@@ -7,8 +7,7 @@ module.exports = {
         extend: {
             maxHeight: {
                 'table-custom-height': 'calc(100vh - 100px)',
-
-                'layout-content-height': 'calc(100vh - 100px)',
+                'layout-content-height': 'calc(100vh - 70px)',
             },
             colors: {
                 textBlack: '#1E1E1E',
