@@ -1,5 +1,11 @@
-<div [class.collapsed]="isCollapsed"
-  class="sidebar relative overflow-hidden h-full border-r border-[#E3DBDB] shadow-sidebar">
+<div [class.collapsed]="isCollapsed" class="sidebar relative h-full border-r border-[#E3DBDB] shadow-sidebar">
+
+  <div class="absolute -right-[.9rem] top-5 bg-white z-30" [ngClass]="{'-right-10' : isCollapsed}">
+    <button class="border rounded-full w-7 h-7" (click)="toggleSidebar()" [ngClass]="{'justify-center' : isCollapsed}">
+      <i class="{{ isCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left text-left' }}"></i>
+    </button>
+  </div>
+
   <div class="logo-container d-flex align-items-center px-0 py-3" [ngClass]="{'justify-center ': isCollapsed}">
     <img src="../../../assets/logo.svg" class="lg:w-[150px] mx-auto" alt="logo">
     <span class="fs-4 fw-bold ms-2 text-white" *ngIf="!isCollapsed">Logo</span>
@@ -37,19 +43,11 @@
       <a href="">
         <div class="flex gap-[10px]" (click)="logout()">
           <img src="/assets/icons/sidebar-icons/logout.svg" alt="logout">
-          <p>Log Out</p>
+          <p *ngIf="!isCollapsed">Log Out</p>
         </div>
       </a>
     </div>
   </div>
 
-  <!-- <div class="sidebar-bottom-content d-flex"
-    [ngClass]="{'justify-center sidebar-bottom-content-collapse' : isCollapsed}">
-    <div class="d-flex w-100 align-items-center justify-content-between">
-      <button class="px-3 py-2 rounded-3 border-0 d-flex w-fit align-items-center gap-2 bg-white text-dark"
-        (click)="toggleSidebar()" [ngClass]="{'justify-center' : isCollapsed}">
-        <i class="{{ isCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left text-left' }}"></i>
-      </button>
-    </div>
-  </div> -->
+
 </div>

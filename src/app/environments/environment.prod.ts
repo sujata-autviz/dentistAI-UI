@@ -1,4 +1,4 @@
 export const environment = {
-    production : true,
-    baseUrl :  "https://8gxqndcq-7185.inc1.devtunnels.ms",
+    production: true,
+    baseUrl: "https://s9nmrtj7-7185.inc1.devtunnels.ms",
 }
