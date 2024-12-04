@@ -203,4 +203,15 @@ export class AuthService {
     }
     return null;
   }
+
+  getTenantIdFromCookie(): string | null {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'dentist_tenantId') {
+        return value;
+      }
+    }
+    return null;
+  }
 }

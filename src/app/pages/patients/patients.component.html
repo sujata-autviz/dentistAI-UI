@@ -69,6 +69,12 @@
             </button>
             <button class="text-textBlack text-sm">Edit</button>
           </div>
+          <div class="flex gap-2 items-center">
+            <button (click)="navigateToPeriodontalChartList(patient.id)" class="w-5 h-5">
+              <img src="/assets/icons/edit.svg" alt="Edit" />
+            </button>
+            <button class="text-textBlack text-sm">View</button>
+          </div>
         </td>
       </tr>
     </ng-template>
