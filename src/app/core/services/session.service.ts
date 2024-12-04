@@ -25,15 +25,19 @@ export class SessionService {
   //   );
   // }
 
-  getCurrentUser(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/CurrentUser`).pipe(
-      catchError((error) => {
-        console.error('Error occurred:', error);
-        throw error;  // Rethrow the error or handle it accordingly
-      })
+  // getCurrentUser(): Observable<any> {
+  //   return this.http.get(`${this.baseUrl}/CurrentUser`).pipe(
+  //     catchError((error) => {
+  //       console.error('Error occurred:', error);
+  //       throw error;  // Rethrow the error or handle it accordingly
+  //     })
+  //   );
+  // }
+  getCurrentUser(): Observable<{ success: boolean; message: string; data: UserDto }> {
+    return this.http.get<{ success: boolean; message: string; data: UserDto }>(
+      `${this.baseUrl}/CurrentUser`
     );
   }
-
   // Get the current user's ID
   getCurrentUserId(): Observable<{ success: boolean; userId: string }> {
     return this.http.get<{ success: boolean; userId: string }>(`${this.baseUrl}/CurrentUserId`);
