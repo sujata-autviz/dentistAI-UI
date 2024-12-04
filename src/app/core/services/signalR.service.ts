@@ -16,7 +16,7 @@ export class SignalRService {
   public initializeConnection(token: string): Observable<boolean> {
     return new Observable((observer) => {
       this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl('https://localhost:7185/signalr/notificationsHub', {
+        .withUrl('https://bf0lv0c8-7185.inc1.devtunnels.ms/signalr/notificationsHub', {
           accessTokenFactory: () => token
         })
         .withAutomaticReconnect({

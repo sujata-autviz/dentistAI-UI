@@ -26,7 +26,7 @@ export class SessionService {
   // }
 
   getCurrentUser(): Observable<any> {
-    return this.http.get('https://localhost:7185/api/Session/CurrentUser').pipe(
+    return this.http.get(`${this.baseUrl}/CurrentUser`).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         throw error;  // Rethrow the error or handle it accordingly
