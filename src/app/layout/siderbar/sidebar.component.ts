@@ -59,7 +59,7 @@ export class SidebarComponent implements OnInit {
   toggleSubmenu(selectedItem: MenuItem, event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    
+
     // If clicking the same item that's already open, just toggle it
     if (this.openSubmenuItem === selectedItem) {
       selectedItem.isCollapsed = !selectedItem.isCollapsed;
@@ -106,11 +106,36 @@ export class SidebarComponent implements OnInit {
         label: 'Home',
         route: '/home',
         permissionName: '',
-        img: 'fa-solid fa-house',
+        img: '/assets/icons/sidebar-icons/home.svg',
         id: 0,
         isActive: false,
       },
-   
+      {
+        label: 'Process XRays',
+        route: '/xray',
+        permissionName: '',
+        img: '/assets/icons/sidebar-icons/xray.svg',
+        id: 0,
+        isActive: false,
+      },
+      {
+        label: 'Product Feature',
+        route: '/product-feature',
+        permissionName: '',
+        img: '/assets/icons/sidebar-icons/product.svg',
+        id: 0,
+        isActive: false,
+      },
+      {
+        label: 'Sample Images',
+        route: '/sample-images',
+        permissionName: '',
+        img: '/assets/icons/sidebar-icons/gallery.svg',
+        id: 0,
+        isActive: false,
+      },
+
+
       // {
       //   label: 'Coupons History',
       //   route: '/coupon-history',
@@ -129,7 +154,7 @@ export class SidebarComponent implements OnInit {
       //     }
       //   ]
       // },
-     
+
     ];
   }
 
@@ -168,7 +193,7 @@ export class SidebarComponent implements OnInit {
     foundedItems.forEach((item) => {
       this.activateMenuItem(item);
     });
-  } 
+  }
 
   deactivateMenuItems(items: MenuItem[]): void {
     items.forEach((item: MenuItem) => {

@@ -59,8 +59,7 @@ export class PeriodontalChartComponent
   transcript: string = '';
   transcripts: string[] = [];
   isRecording: boolean = false;
-  menuShow: boolean = false;
-
+  
   pdValues: PocketDepth[] = [];
   gmValues: GingivalMargin[] = [];
   calValues: clinicalAttachmentLevel[] = [];
@@ -124,12 +123,6 @@ export class PeriodontalChartComponent
         mesialPalatial: 0,
       });
     }
-  }
-
-  // show menu
-  showMenu() {
-    this.menuShow = !this.menuShow;
-    console.log(this.menuShow);
   }
 
   // Generate Gingival Margin Values
