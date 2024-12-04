@@ -33,7 +33,7 @@
 
 
   <div class="absolute bottom-0 left-0 w-full">
-    <div class="border-t border-[#EBEBEB] py-[15px] ps-[30px]">
+    <div class="border-t border-[#EBEBEB] py-[15px]" [ngClass]="{'ps-[30px]' : !isCollapsed , 'ps-4' : isCollapsed}">
       <a href="">
         <div class="flex gap-[10px]">
           <img src="/assets/icons/sidebar-icons/logout.svg" alt="logout">
