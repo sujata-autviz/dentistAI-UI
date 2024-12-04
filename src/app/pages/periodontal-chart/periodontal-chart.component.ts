@@ -26,6 +26,7 @@ import { ChangeDetectorRef, Component ,Input, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { SessionService } from '../../core/services/session.service';
 import { UserDto } from '../../interfaces/user-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-periodontal-chart',
@@ -78,7 +79,8 @@ export class PeriodontalChartComponent
     private cdr: ChangeDetectorRef,
     private sessionService: SessionService,
     private signalService: SignalRService,
-    private authService : AuthService
+    private authService : AuthService,
+    private route: Router
   ) {
     super();
     this.signalService.getNotifications().subscribe((message: string) => {
@@ -215,8 +217,7 @@ export class PeriodontalChartComponent
     }
   }
 
-  getPatientChart() {
-    
+  getPatientChart() {    
     if (this.chartId)
       this._periodontalChartService
         .getChart(this.chartId , this.tenantId)
@@ -259,6 +260,7 @@ export class PeriodontalChartComponent
           this.pdValues[pdIndex].distalPalatial = tooth.distalPalatial;
           this.pdValues[pdIndex].palatial = tooth.palatial;
           this.pdValues[pdIndex].mesialPalatial = tooth.mesialPalatial;
+          this.pdValues[pdIndex].mobilityGrade = tooth.mobilityGrade;
         }
 
         // Update GM Values
@@ -582,6 +584,7 @@ const input: AddOrUpdateTeethDto = {
       .subscribe(
         (response) => {
           if (response.success) {
+            this.getPatientChart()
             this.notificationService.successAlert('Chart saved successfully!');
             console.log('Chart saved successfully!');
           }
@@ -1141,7 +1144,12 @@ const input: AddOrUpdateTeethDto = {
   toggleEdit() {
     this.isEditMode = !this.isEditMode;
   }
-  newReport() {}
+  newReport() {
+    this.chartId = '';
+    this.clearAll();
+  }
 
-  cancel() {}
+  cancel() {
+    this.route.navigate(['periodontal-chart-list'], { queryParams: { patientId: this.patientId } });
+  }
 }

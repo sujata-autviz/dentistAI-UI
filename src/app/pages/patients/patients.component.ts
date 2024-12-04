@@ -147,6 +147,7 @@ export class PatientsComponent {
             this.notificationService.successAlert(response.message);
             this.patientDialogVisible = false;
             this.isEditMode = false;
+            this.loadPatients();
             // Reset form or perform any other necessary actions
           } else {
             // Show failure message using PrimeNG message service
