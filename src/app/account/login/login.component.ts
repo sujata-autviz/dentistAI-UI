@@ -48,14 +48,10 @@ export class LoginComponent extends BaseDestroyCompoent implements OnInit {
         next: (response: LoginResponse) => {
           this.loading = false;      
           this.notificationService.successToast("Login successful!")
-          // this._route.navigateByUrl('/pages/home');
-          this._route.navigateByUrl('/pages/home').then(success => {
-            if (success) {
-              console.log('Navigation to /home was successful');
-            } else {
-              console.error('Navigation to /home failed');
-            }
-          });
+          if (this._authService.isAuthenticated()) {  
+            this._route.navigate(['/home']); 
+            
+          }
           
           this._cdr.detectChanges();
 

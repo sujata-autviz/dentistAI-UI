@@ -52,7 +52,7 @@ loadCharts(): void {
   
   
   addNewReport() {
-   
+    this.router.navigate(['periodontal-chart'], { queryParams: {  patientId: this.patientId } });
     // Open a modal or redirect to a report creation form
   }
 }

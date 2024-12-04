@@ -64,11 +64,8 @@ export class AuthService {
           if (user && user.data.token) {        
             this.setTokenCookie(user.data);
             this.setTenantCookie(user.data.user);
-            // this.sessionService.getCurrentUser().subscribe({
-            //   next: (user) => console.log('Current user:', user),
-            //   error: (error) => console.error('Error fetching current user:', error)
-            // });
-            this.currentUserSubject.next(user);
+     
+            this.currentUserSubject.next(user.data);
           }
           this.loggedInSubject.next(true);
           return user;
