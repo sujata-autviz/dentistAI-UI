@@ -18,7 +18,8 @@
         <div class="flex items-center gap-4 pb-[10px]">
           <div class="relative h-fit w-fit">
             <img src="/assets/icons/src.svg" alt="Search Icon" class="absolute left-[14px] top-2 w-5 h-5" />
-            <input (keydown.enter)="onSearch($event)" pInputText type="text"
+            <input (input)="onSearch($event)" pInputText type="text"
+            [(ngModel)]="searchTerm"
               placeholder="Search Patient by Name or OPD ID"
               class="h-10 w-[290px] ps-[2.8rem] text-sm focus:outline-none placeholder:text-sm placeholder:font-normal placeholder:leading-[16.59px] placeholder:text-[#4A4A4A] pe-6 rounded-lg bg-[#F2F2F2] " />
           </div>

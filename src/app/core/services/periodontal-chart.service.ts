@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { PeriodontalChart } from '../../interfaces/periodontal-chart';
 import { AddOrUpdateTeethDto, Tooth } from '../../interfaces/tooth';
 import { environment } from '../../environments/environment';
@@ -14,8 +14,24 @@ export class PeriodontalChartService {
   constructor(private http: HttpClient) {}
 
   // Get a chart by ID
-  getChart(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetChart/${id}`);
+  getChart(id: string, tenantId: string): Observable<any> {
+    const url = `${this.apiUrl}/GetChart/${id}/${tenantId}`;
+    return this.http.get(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network error
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // Backend error
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 
   // Get charts by patient ID

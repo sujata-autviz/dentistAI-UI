@@ -1,11 +1,15 @@
-<div *ngFor="let chart of charts">
-    <div class="chart-item">
-      <h4>Chart ID: {{ chart.id }}</h4>
-      <p>Patient ID: {{ chart.patientID }}</p>
-      <p>Tenant ID: {{ chart.tenantId }}</p>
-      <!-- <p>Chart Date: {{ chart.chartDate | date:'medium' }}</p>
-      <p>Created At: {{ chart.createdAt | date:'medium' }}</p>
-      <p>Updated At: {{ chart.updatedAt | date:'medium' }}</p> -->
+<div class="chart-actions">
+  <button class="add-button" (click)="addNewReport()">Add New Report</button>
+</div>
+
+<div *ngFor="let chart of charts" class="chart-container">
+  <div class="chart-box">
+    <p>
+      Date: 
+      {{ chart.updatedAt ? (chart.updatedAt | date:'medium') : (chart.createdAt | date:'medium') }}
+    </p>
+    <div class="actions">
+      <button class="view-button" (click)="viewChart(chart.id)">View</button>
     </div>
   </div>
-  
+</div>

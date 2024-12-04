@@ -185,7 +185,7 @@ export class PatientsComponent {
     );
   }
   navigateToPeriodontalChartList(patientId: string) {
-    this.router.navigate(['periodontal-chart-list'], { queryParams: { productId: patientId } });
+    this.router.navigate(['periodontal-chart-list'], { queryParams: { patientId: patientId } });
   }
   
 }
