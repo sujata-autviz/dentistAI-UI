@@ -8,6 +8,8 @@
     body {
         font-family: 'Rubik';
         -webkit-font-smoothing: subpixel-antialiased;
+        width: 100%;
+        height: 100%;
     }
 
     .bar-btn {
@@ -29,6 +31,15 @@
 $text-color : #1E1E1E;
 $textDanger: #ED1B24;
 
+// page-title
+.main-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: $text-color;
+    font-family: 'Rubik';
+    text-transform: capitalize;
+}
+
 // table heading 
 .t-title {
     font-size: 16px;
@@ -38,7 +49,7 @@ $textDanger: #ED1B24;
     font-size: 14px;
     line-height: 20px;
     color: $text-color;
-    border-bottom: 1px solid transparent;
+    border-bottom: 2px solid $textDanger;
     width: fit-content;
     padding-bottom: 18px;
     padding-left: 15px;
@@ -46,9 +57,9 @@ $textDanger: #ED1B24;
     transition: all .3s ease-in-out;
 
 
-    &:hover {
-        border-color: $textDanger;
-    }
+    // &:hover {
+    //     border-color: $textDanger;
+    // }
 }
 
 .p-datatable-header {
@@ -104,7 +115,65 @@ $textDanger: #ED1B24;
             // border: 0;
             outline: 0;
         }
-
-
     }
 }
+
+
+// ----------- modal UI -------------
+// dialog box width 
+
+.p-dialog {
+    width: 60%;
+
+    .p-dialog-header {
+        border-top-right-radius: 12px;
+        border-top-left-radius: 12px;
+    }
+
+    .p-dialog-footer {
+        border-bottom-right-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+}
+
+.cnl-btn {
+    border: 1px solid #1E1E1E;
+    border-radius: 6px;
+    color: #1E1E1E;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    padding: 8px 14px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.sav-btn {
+    border: 1px solid green;
+    border-radius: 6px;
+    color: #fff;
+    background: green;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &:hover {}
+
+}
+
+
+// gradient-border
+.bg-gradient {
+    background: linear-gradient(89.1deg, rgba(141, 129, 216, 0.1) 32.88%, rgba(186, 130, 204, 0.1) 63.84%, rgba(115, 161, 230, 0.1) 82.33%, rgba(236, 88, 152, 0.1) 95.23%);
+}
+
+
+// * {
+//     border: 1px solid red;
+// }

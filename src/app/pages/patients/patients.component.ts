@@ -147,6 +147,7 @@ export class PatientsComponent {
             this.notificationService.successAlert(response.message);
             this.patientDialogVisible = false;
             this.isEditMode = false;
+            this.loadPatients();
             // Reset form or perform any other necessary actions
           } else {
             // Show failure message using PrimeNG message service
@@ -185,7 +186,7 @@ export class PatientsComponent {
     );
   }
   navigateToPeriodontalChartList(patientId: string) {
-    this.router.navigate(['periodontal-chart-list'], { queryParams: { productId: patientId } });
+    this.router.navigate(['periodontal-chart-list'], { queryParams: { patientId: patientId } });
   }
   
 }

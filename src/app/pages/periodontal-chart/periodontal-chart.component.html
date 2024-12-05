@@ -1,63 +1,3 @@
-<!-- header is here -->
-<nav
-  class="relative lg:flex container-fluid mx-auto w-100 lg:position-sticky border-b border-[#EBEBEB] px-5 pt-3 pb-0 lg:items-end">
-  <div class="flex justify-between items-center lg:block w-full lg:w-auto">
-    <div class="logo-container">
-      <img src="../../../assets/logo.svg" alt="Better Diagnostics" class="pb-3">
-    </div>
-
-
-    <button class="btn-menu block lg:hidden" (click)="showMenu()">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-  </div>
-
-  <div class="mobile-menu lg:flex lg:align-items-end lg:ml-[50px] lg:justify-between lg:w-full"
-    [ngClass]="{'showMenu': menuShow}">
-    <div class="nav_menu flex flex-col lg:flex-row lg:gap-2 lg:items-end">
-      <a href="#">Home</a>
-      <a href="#">Process XRays</a>
-      <a href="#">Product Features</a>
-      <a href="#">Sample Images</a>
-    </div>
-
-
-    <div class="flex flex-col gap-2 lg:items-center lg:gap-4 lg:flex-row lg:mb-2">
-      <div
-        class="flex flex-wrap justify-between lg:flex-row lg:items-center  lg:gap-5 bg-[#F6F8FA] text-[#4A4A4A] p-3 lg:px-[5px] lg:py-[5px] lg:rounded-lg lg:text-sm">
-
-        <p class="flex items-center gap-2 whitespace-nowrap mb-3 lg:mb-0">
-          <img src="/assets/icons/box.svg" class="lg:w-4 lg:h-4" alt="rvg"> <span>RVG - 300/500</span>
-        </p>
-
-        <p class="flex items-center gap-2 whitespace-nowrap mb-3 lg:mb-0">
-          <img src="/assets/icons/box.svg" class="lg:w-4 lg:h-4" alt="rvg"> <span>OPG - 300/500</span>
-        </p>
-
-
-        <div class="flex items-center gap-2">
-          <p class="px-[10px] py-1 rounded-full bg-[#72727E] text-white lg:text-sm lg:whitespace-nowrap ">
-            325 Days
-          </p>
-          <i class="fa-solid text-[#1E1E1E]" [class]=" 5>2 ? 'fa-chevron-down' : 'fa-chevron-up' "></i>
-        </div>
-      </div>
-
-      <div
-        class="flex items-center justify-between p-3 bg-[#F6F8FA] text-[#4A4A4A] lg:px-[5px] lg:py-[5px] lg:rounded-lg lg:text-sm gap-[10px]">
-
-        <p class="">Better Diagnostic</p>
-
-        <span
-          class="rounded-full w-[30px] h-[30px] flex justify-center items-center text-sm text-white bg-[#447CB7] font-bold">BD</span>
-        <!-- <img src="" alt=""> -->
-      </div>
-    </div>
-
-  </div>
-</nav>
-<!-- header end here -->
-
 <!-- bar start here-->
 <div class="bg-[#F8F8F8] w-100 px-5 py-4 flex justify-between flex-wrap lg:flex-nowrap items-center mt-5 lg:mt-[11px]">
   <h2 class="text-base text-textBlack font-semibold">Periodontal Chart</h2>
@@ -140,12 +80,12 @@
       Clear All
     </button>
 
-    <button class="bar-btn">
+    <button class="bar-btn" (click)="newReport()">
       <img src="../../../assets/icons/bar-icons/new-tab.svg" alt="New Report" />
       New Report
     </button>
 
-    <button class="bar-btn">
+    <button class="bar-btn" (click)="cancel()">
       <img src="../../../assets/icons/bar-icons/cancel.svg" alt="save" />
       Cancel
     </button>
@@ -155,7 +95,7 @@
 
 <!-- custom-table  -->
 
-<div class="relative max-w-full max-h-table-custom-height overflow-x-auto mt-5 lg:mt-[39px] mx-6">
+<div class="relative overflow-x-auto mt-5 lg:mt-[39px] mx-6">
   <table class="chartTable-cutsom ">
     <thead>
       <tr>
@@ -487,7 +427,7 @@
   </table>
 </div>
 
-<div class="relative max-w-full max-h-table-custom-height overflow-x-auto mt-5 lg:mt-[39px] mx-6">
+<div class="relative overflow-x-auto mt-5 lg:mt-[39px] mx-6">
   <table class="chartTable-cutsom mx-auto">
     <thead>
       <tr>

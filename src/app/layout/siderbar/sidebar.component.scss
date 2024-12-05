@@ -1,6 +1,8 @@
 .sidebar {
-  width: 250px;
+  width: 260px;
   transition: width 0.3s ease;
+  // border-right: 1px solid #E3DBDB;
+  // height: 100%;
 }
 
 .sidebar.collapsed {
@@ -8,8 +10,7 @@
 }
 
 .menu-items li.active {
-  background-color: #fff;
-  // color: #595CD9;
+  background: linear-gradient(89.1deg, rgba(141, 129, 216, 0.1) 32.88%, rgba(186, 130, 204, 0.1) 63.84%, rgba(115, 161, 230, 0.1) 82.33%, rgba(236, 88, 152, 0.1) 95.23%);
 
   a {
     color: #22303E;
@@ -19,8 +20,7 @@
 
 // resolve bug : when hover on other element it will force to have active class color
 .menu-items li.active a:hover {
-  background-color: #fff;
-  // color: #fff;
+  background: linear-gradient(89.1deg, rgba(141, 129, 216, 0.1) 32.88%, rgba(186, 130, 204, 0.1) 63.84%, rgba(115, 161, 230, 0.1) 82.33%, rgba(236, 88, 152, 0.1) 95.23%);
 }
 
 .menu-items li a {
@@ -28,6 +28,18 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   padding: 10px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+// Hover Effect of Anchor Tag
+.menu-items a:hover {
+  background-color: rgba(244, 244, 244, 1);
+
+  // .menu-list-container svg {
+  //   fill: #ED1B24;
+  //   fill: #ED1B24;
+  // }
 }
 
 .menu-items .submenu {
@@ -55,8 +67,6 @@
 
 .menu-items {
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .menu-items li {
@@ -76,26 +86,21 @@
   align-items: center;
   padding: 15px;
   text-decoration: none;
-  color: rgba(244, 244, 244, 1);
+  color: #1E1E1E;
   // font-size: 14px;
   transition: background-color 0.3s;
 
   .menu-list-container i {
-
     font-size: 16px;
   }
 
 
   span {
     font-size: 13px;
-    // font-weight: 600;
   }
 
 }
 
-.menu-items a:hover {
-  background-color: rgba(244, 244, 244, .5);
-}
 
 .nav-icon {
   margin-right: 10px;
@@ -130,11 +135,11 @@
   }
 }
 
-
-.main-menu-items {
-  max-height: 80%;
-  overflow-y: auto;
-}
+// overflow item div with scroll **may be required later on enable it** 
+// .main-menu-items {
+//   max-height: 100%;
+//   overflow-y: auto;
+// }
 
 /* Scrollbar base style */
 .main-menu-items::-webkit-scrollbar {

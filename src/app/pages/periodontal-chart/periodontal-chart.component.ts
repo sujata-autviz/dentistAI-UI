@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+
 import { BaseDestroyCompoent } from '../../shared/utils/basedestroy';
 import { PeriodontalChartService } from '../../core/services/periodontal-chart.service';
 import { finalize, takeUntil } from 'rxjs';
@@ -22,6 +22,11 @@ import { VoiceRecognitionRequest } from '../../interfaces/voice-recognition-requ
 import { FormsModule } from '@angular/forms';
 import { NotificationsService } from '../../core/services/notifications.service';
 import { SignalRService } from '../../core/services/signalR.service';
+import { ChangeDetectorRef, Component ,Input, OnInit } from '@angular/core';
+import { AuthService } from '../../core/services/auth.service';
+import { SessionService } from '../../core/services/session.service';
+import { UserDto } from '../../interfaces/user-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-periodontal-chart',
@@ -34,6 +39,7 @@ export class PeriodontalChartComponent
   extends BaseDestroyCompoent
   implements OnInit
 {
+  
   addOrUpdateTeethDto: AddOrUpdateTeethDto | undefined 
   isEditMode: boolean = false;
   distalBuccal: number | null | undefined;
@@ -49,30 +55,32 @@ export class PeriodontalChartComponent
   distalPalatial: number | null | undefined;
   palatial: number | null | undefined;
   mesialPalatial: number | null | undefined;
-  // patientId: string | null = null;
-  patientId = '6749666f2b66730c98856dbb';
+  @Input() patientId: string =''; 
   periodontalChart: PeriodontalChart | undefined;
-  charts: PeriodontalChartDto[] = [];
-  tenantId: string = ''; // Initialize with appropriate value
-  chartId: string = '';
+  chart!: PeriodontalChartDto;
+  tenantId:  string  =''; // Initialize with appropriate value
+  doctorId:  string  ='';
   teeth: Tooth[] = []; //
   transcript: string = '';
   transcripts: string[] = [];
   isRecording: boolean = false;
-  menuShow: boolean = false;
-
+  @Input() chartId: string = '';
   pdValues: PocketDepth[] = [];
   gmValues: GingivalMargin[] = [];
   calValues: clinicalAttachmentLevel[] = [];
   bleedingValues: Bleeding[] = [];
   suppurationValues: Suppuration[] = [];
   mgjValues: MucogingivalJunction[] = [];
+  user: UserDto | undefined;
   constructor(
     private _periodontalChartService: PeriodontalChartService,
     private speechService: SpeechRecognitionService,
     private notificationService: NotificationsService,
     private cdr: ChangeDetectorRef,
-    private signalService: SignalRService
+    private sessionService: SessionService,
+    private signalService: SignalRService,
+    private authService : AuthService,
+    private route: Router
   ) {
     super();
     this.signalService.getNotifications().subscribe((message: string) => {
@@ -81,10 +89,14 @@ export class PeriodontalChartComponent
         this.processTranscript(message);
       }
     });
-    
+    this.tenantId = this.authService.getTenantIdFromCookie() || '';
+
   }
   ngOnInit(): void {
-   
+    this.sessionService.getCurrentUser().subscribe((res) => {
+      this.user = res.data;
+      this.doctorId = this.user.id;
+    });
     this.getPatientChart();
     this.generatePdValues();
     this.generateBleedingValues();
@@ -124,12 +136,6 @@ export class PeriodontalChartComponent
         mesialPalatial: 0,
       });
     }
-  }
-
-  // show menu
-  showMenu() {
-    this.menuShow = !this.menuShow;
-    console.log(this.menuShow);
   }
 
   // Generate Gingival Margin Values
@@ -211,16 +217,16 @@ export class PeriodontalChartComponent
     }
   }
 
-  getPatientChart() {
-    if (this.patientId)
+  getPatientChart() {    
+    if (this.chartId)
       this._periodontalChartService
-        .getChartsByPatientId(this.patientId)
+        .getChart(this.chartId , this.tenantId)
         .subscribe(
           (response) => {
             if (response.success) {
-              this.charts = response.charts;
-              this.chartId = response.charts[0].id;
-              this.tenantId = response.charts[0].tenantId;
+              this.chart = response.chart;
+              this.chartId = response.chart.id;
+              this.tenantId = response.chart.tenantId;
               this.updateValuesFromCharts();
             } else {
             }
@@ -233,8 +239,8 @@ export class PeriodontalChartComponent
 
   updateValuesFromCharts() {
     let iterationCount = 0;
-    this.charts.forEach((chart) => {
-      chart.teeth.forEach((tooth) => {
+
+      this.chart.teeth.forEach((tooth) => {
         if (iterationCount >= 32) return;
         // Update PD Values
         const pdIndex = this.pdValues.findIndex(
@@ -254,6 +260,7 @@ export class PeriodontalChartComponent
           this.pdValues[pdIndex].distalPalatial = tooth.distalPalatial;
           this.pdValues[pdIndex].palatial = tooth.palatial;
           this.pdValues[pdIndex].mesialPalatial = tooth.mesialPalatial;
+          this.pdValues[pdIndex].mobilityGrade = tooth.mobilityGrade;
         }
 
         // Update GM Values
@@ -351,7 +358,7 @@ export class PeriodontalChartComponent
             tooth.mucogingivalJunctionLingualRight;
         }
         iterationCount++; });
-    });
+ 
 
     // Sort each array by toothNumber and limit to the first 16 entries
     this.pdValues.sort((a, b) => a.toothNumber - b.toothNumber);
@@ -564,11 +571,11 @@ export class PeriodontalChartComponent
           mgj?.mucogingivalJunctionLingualRight || null,
       };
     });
-
 const input: AddOrUpdateTeethDto = {
   patientId: this.patientId,
   tenantId: this.tenantId,
   chartId: this.chartId,
+  doctorId: this.doctorId,
   teeth: this.teeth
 };
 
@@ -577,6 +584,7 @@ const input: AddOrUpdateTeethDto = {
       .subscribe(
         (response) => {
           if (response.success) {
+            this.getPatientChart()
             this.notificationService.successAlert('Chart saved successfully!');
             console.log('Chart saved successfully!');
           }
@@ -1136,7 +1144,12 @@ const input: AddOrUpdateTeethDto = {
   toggleEdit() {
     this.isEditMode = !this.isEditMode;
   }
-  newReport() {}
+  newReport() {
+    this.chartId = '';
+    this.clearAll();
+  }
 
-  cancel() {}
+  cancel() {
+    this.route.navigate(['periodontal-chart-list'], { queryParams: { patientId: this.patientId } });
+  }
 }

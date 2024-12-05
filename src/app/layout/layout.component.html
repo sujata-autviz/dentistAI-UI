@@ -1,18 +1,14 @@
-<div class="layout" style="background: #F5F5F9;">
+<div class="layout" style="background: #fff;">
   <!-- Sidebar -->
-  <app-sidebar style="background:#564DB4;"></app-sidebar>
+  <app-sidebar style="background:#fff"></app-sidebar>
 
-  <div class="main-content">
-    <!-- Header -->
+  <div class="flex-1 overflow-x-hidden">
+    <app-header></app-header>
 
-    <!-- Main Content -->
-    <div class="content">
-      <app-header></app-header>
-      <!-- <app-loader></app-loader> -->
+    <!-- <app-loader></app-loader> -->
+
+    <div class=" max-h-layout-content-height overflow-y-auto px-5 py-[15px] w-full">
       <router-outlet></router-outlet>
     </div>
-
-    <!-- Footer -->
-    <!-- <app-footer></app-footer> -->
   </div>
 </div>

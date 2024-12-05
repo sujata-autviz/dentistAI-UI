@@ -140,6 +140,7 @@ export interface MucogingivalJunction {
 export interface AddOrUpdateTeethDto {
   patientId: string;
   tenantId: string;
+  doctorId: string;
   chartId?: string | null;
   teeth: Tooth[];
 }
