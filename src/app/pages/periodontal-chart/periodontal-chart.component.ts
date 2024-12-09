@@ -831,7 +831,46 @@ const input: AddOrUpdateTeethDto = {
   //   }
   // }
 
-
+  processTranscription(transcription: string): void {
+    const transcriptionArray = transcription.split(','); // Example: ['1', '3', '3', '4']
+  
+    // Initialize an empty object to hold patient data
+    const patientData: any = {
+      patientId: "674edcb14514c098217cf32c",
+      chartId: "675682bef22ba634306f546b",
+      patient: {} // This will hold the dynamically generated tooth data
+    };
+  
+    // Iterate over the transcription array and populate the patient data
+    let i = 0;
+    while (i < transcriptionArray.length) {
+      const toothNumber = transcriptionArray[i].trim(); // Get tooth number
+      const score = transcriptionArray[i + 1] ? parseInt(transcriptionArray[i + 1].trim()) : 0; // Get score, default to 0 if missing
+  
+      // If this tooth number doesn't exist in the patient data, create it
+      if (!patientData.patient[toothNumber]) {
+        patientData.patient[toothNumber] = {
+          Distal_Buccal: 0,
+          Buccal: 0,
+          Mesial_Buccal: 0,
+          Distal_Lingual: 0,
+          Lingual: 0,
+          Mesial_Lingual: 0
+        };
+      }
+  
+      // Assign the score to the appropriate tooth part (or any other logic you may have)
+      // In this example, we're assigning the score to 'Distal_Buccal' for simplicity
+      patientData.patient[toothNumber].Distal_Buccal = score;
+  
+      // Move to the next pair (tooth number and score)
+      i += 2;
+    }
+  
+    // Output the generated patient data
+    console.log('Updated Patient Data:', patientData);
+  }
+  
   processTranscript(transcript: any) {
     const patientData = JSON.parse(transcript)
 if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.patientId && this.patientId == patientData.patientId))
@@ -1112,8 +1151,10 @@ if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.
         this.mediaRecorder.onstop = () => {
           const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });
           this.audioUrl = URL.createObjectURL(audioBlob);
-          this.audioChunks = []; 
-          this.downloadAudio();// Reset the audio chunks for future recordings
+           this.sendAudioToPythonAPI();
+            
+           this.audioChunks = []; 
+         // Reset the audio chunks for future recordings
         };
       })
       .catch(error => console.error('Error accessing media devices.', error));
@@ -1124,8 +1165,12 @@ if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.
     this.isRecording = false;
     if (this.mediaRecorder) {
       this.mediaRecorder.stop();
+    }  if (this.mediaRecorder.stream) {
+      const tracks = this.mediaRecorder.stream.getTracks();
+      tracks.forEach(track => track.stop());  // Stop each track (audio track in this case)
     }
   }
+  
 
   // Download the audio file
   downloadAudio(): void {
@@ -1134,6 +1179,25 @@ if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.
       a.href = this.audioUrl;
       a.download = 'recorded-audio.mp3';
       a.click();
+    }
+  }
+  sendAudioToPythonAPI(): void {
+    if (this.audioChunks.length > 0) {
+      // Convert the recorded audio chunks into a Blob
+      const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });
+  
+      // Create a FormData object to send the audio as multipart form data
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recorded-audio.mp3');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audioElement = new Audio(audioUrl);
+      
+      // Optionally, automatically play the audio for the user to preview
+     // audioElement.play();
+      
+  
+      // Send the FormData to the Python API
+     
     }
   }
 }
