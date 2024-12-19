@@ -1,16 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { VoiceRecognitionRequest } from '../../interfaces/voice-recognition-request';
+import { VoiceRecognitionRequestDto } from '../../interfaces/voice-recognition-request-dto';
 declare var annyang: any;
 @Injectable({
   providedIn: 'root'
 })
 export class SpeechRecognitionService {
-  // private apiUrl = `${environment.baseUrl}/api/Speech`; // Replace with your .NET API URL
+  private apiUrl = `${environment.baseUrl}/api/Speech`; // Replace with your .NET API URL
 
-  // constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   // startVoiceRecognition(request: VoiceRecognitionRequest): Observable<any> {
   //   return this.http.post(`${this.apiUrl}/Start`, request); // Call the Start endpoint
@@ -58,5 +59,25 @@ export class SpeechRecognitionService {
       a.download = 'recorded-audio.mp3';
       a.click();
     }
+  }
+  startVoiceRecognition(request: VoiceRecognitionRequestDto): Observable<any> {
+    const formData = new FormData();
+    formData.append('audioFile', request.audioFile);
+    formData.append('patientId', request.patientId);
+    formData.append('doctorId', request.doctorId);
+    formData.append('chartId', request.chartId);
+    formData.append('tenantId', request.tenantId);
+
+    return this.http.post<any>(`${this.apiUrl}/StartVoiceRecognition`, formData);
+  }
+  transcribeAudioFile(request: VoiceRecognitionRequestDto): Observable<any> {
+    const formData = new FormData();
+    formData.append('audioFile', request.audioFile);
+    formData.append('patientId', request.patientId);
+    formData.append('doctorId', request.doctorId);
+    formData.append('chartId', request.chartId);
+    formData.append('tenantId', request.tenantId);
+
+    return this.http.post<any>(`${this.apiUrl}/transcribe`, formData);
   }
 }

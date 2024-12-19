@@ -27,6 +27,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { SessionService } from '../../core/services/session.service';
 import { UserDto } from '../../interfaces/user-dto';
 import { Router } from '@angular/router';
+import { VoiceRecognitionRequestDto } from '../../interfaces/voice-recognition-request-dto';
 
 @Component({
   selector: 'app-periodontal-chart',
@@ -39,7 +40,10 @@ export class PeriodontalChartComponent
   extends BaseDestroyCompoent
   implements OnInit
 {
-  
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
+  private silenceTimeout: any;
+  private silenceThreshold: number = 4000;  
   addOrUpdateTeethDto: AddOrUpdateTeethDto | undefined 
   isEditMode: boolean = false;
   distalBuccal: number | null | undefined;
@@ -73,6 +77,13 @@ export class PeriodontalChartComponent
   mgjValues: MucogingivalJunction[] = [];
   user: UserDto | undefined;
   isChartSave: boolean = false;
+private silenceDuration: number = 4000; // Silence threshold in milliseconds (4 seconds)
+private audioContext: AudioContext | null = null;
+private analyser: AnalyserNode | null = null;
+private dataArray: Uint8Array | null = null;
+private stream: MediaStream | null = null;
+private isSilent = false;
+
   constructor(
     private _periodontalChartService: PeriodontalChartService,
     private speechService: SpeechRecognitionService,
@@ -83,7 +94,8 @@ export class PeriodontalChartComponent
     private authService : AuthService,
     private route: Router
   ) {
-    super();
+    super(); 
+
     this.signalService.getNotifications().subscribe((message: string) => {
       if (message !== null ) {
         this.transcript = this.transcript.concat(message);
@@ -538,338 +550,69 @@ const input: AddOrUpdateTeethDto = {
     if (this.isRecording) {
        this.stopRecording();
     } else {
-      this.startRecording();
+      this.startListening();
     }
   }
 
-  // startRecognition() {
-  //   const request: VoiceRecognitionRequest = {
-  //     tenantId: this.tenantId,
-  //     chartId: this.chartId,
-  //   };
 
-  //   this.isRecording = !this.isRecording;
-
-  //   if (this.isRecording) {
-  //     this.speechService.startVoiceRecognition(request).subscribe(
-  //       (response) => {
-  //         if (response.success) {
-  //           this.transcript = response.transcript;
-  //           // Store the transcript
-  //           console.log('Transcript:', this.transcript);
-  //           this.processTranscript({
-  //             "patient1": {
-  //                 "1": {
-  //                     "Distal_Buccal": "2mm",
-  //                     "Buccal": "0.3mm",
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": "5mm",
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": "2mm"
-  //                 },
-  //                 "2": {
-  //                     "Distal_Buccal": "1.3mm",
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": "3mm",
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": "4mm"
-  //                 },
-  //                 "3": {
-  //                     "Distal_Buccal": "0.9mm",
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": "6mm"
-  //                 },
-  //                 "4": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "5": {
-  //                     "Distal_Buccal": "2mm",
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": "3mm",
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "6": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "7": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": "4.3mm",
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "8": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": "3.4mm",
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "9": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "10": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "11": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "12": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "13": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "14": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "15": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "16": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "17": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "18": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "19": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "20": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "21": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "22": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "23": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "24": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "25": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": null,
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "26": {
-  //                     "Distal_Facial": null,
-  //                     "Facial": null,
-  //                     "Mesial_Facial": null,
-  //                     "Distal_Palatal": null,
-  //                     "Palatal": "4.12mm",
-  //                     "Mesial_Palatal": null
-  //                 },
-  //                 "27": {
-  //                     "Distal_Facial": 7,
-  //                     "Facial": 6,
-  //                     "Mesial_Facial": 5,
-  //                     "Distal_Palatal": 4,
-  //                     "Palatal": 3,
-  //                     "Mesial_Palatal": 2
-  //                 },
-  //                 "28": {
-  //                     "Distal_Buccal": 1,
-  //                     "Buccal": 2,
-  //                     "Mesial_Buccal": 3,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "29": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "30": {
-  //                     "Distal_Buccal": null,
-  //                     "Buccal": null,
-  //                     "Mesial_Buccal": null,
-  //                     "Distal_Lingual": null,
-  //                     "Lingual": null,
-  //                     "Mesial_Lingual": null
-  //                 },
-  //                 "31": {
-  //                     "Distal_Buccal": 4,
-  //                     "Buccal": 3,
-  //                     "Mesial_Buccal": 2,
-  //                     "Distal_Lingual": 6,
-  //                     "Lingual": 3,
-  //                     "Mesial_Lingual": 4
-  //                 },
-  //                 "32": {
-  //                     "Distal_Buccal": 3,
-  //                     "Buccal": 3,
-  //                     "Mesial_Buccal": 3,
-  //                     "Distal_Lingual": 3,
-  //                     "Lingual": 3,
-  //                     "Mesial_Lingual": 3
-  //                 }
-  //             }
-  //         });
-  //           this.isRecording = false; // Process the transcript
-  //         } else {
-  //           this.isRecording = false;
-  //           console.error('Error:', response.Message);
-  //         }
-  //       },
-  //       (error) => {
-  //         this.isRecording = false;
-  //         console.error('Error starting voice recognition:', error);
-  //       }
-  //     );
-  //   }
-  // }
 
 
   processTranscript(transcript: any) {
-    const patientData = JSON.parse(transcript)
-if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.patientId && this.patientId == patientData.patientId))
-      for (const toothNumber in patientData.patient) {
-        if (patientData.patient.hasOwnProperty(toothNumber)) {
-          const tooth = patientData.patient[toothNumber];
-          const pdIndex = this.pdValues.findIndex((item) => item.toothNumber === +toothNumber);
-    
-          if (pdIndex !== -1) {
-            this.pdValues[pdIndex].distalBuccal = this.removeMM(tooth.Distal_Buccal);
-            this.pdValues[pdIndex].buccal = this.removeMM(tooth.Buccal);
-            this.pdValues[pdIndex].mesialBuccal = this.removeMM(tooth.Mesial_Buccal);
-            this.pdValues[pdIndex].distalLingual = this.removeMM(tooth.Distal_Lingual);
-            this.pdValues[pdIndex].lingual = this.removeMM(tooth.Lingual);
-            this.pdValues[pdIndex].mesialLingual = this.removeMM(tooth.Mesial_Lingual);
-            this.pdValues[pdIndex].distalFacial = this.removeMM(tooth.Distal_Facial);
-            this.pdValues[pdIndex].facial = this.removeMM(tooth.Facial);
-            this.pdValues[pdIndex].mesialFacial = this.removeMM(tooth.Mesial_Facial);
-            this.pdValues[pdIndex].distalPalatial = this.removeMM(tooth.Distal_Palatal);
-            this.pdValues[pdIndex].palatial = this.removeMM(tooth.Palatal);
-            this.pdValues[pdIndex].mesialPalatial = this.removeMM(tooth.Mesial_Palatal);
-          }
+    let patientData;
+
+    // Check if the message is already an object or a valid JSON string
+    if (typeof transcript.message === 'string') {
+        try {
+            patientData = JSON.parse(transcript.message);
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return; // Handle the error gracefully
         }
-      }
-
-
-  
-  }
-  
-  // Helper function to remove "mm" and ensure the value is a valid nullable integer
-  removeMM(value: string | number): number {
-    if (typeof value === 'string') {
-      // Remove "mm" and convert to number, defaulting to 0 if invalid
-      return parseFloat(value.replace('mm', '').trim()) || 0;
+    } else if (typeof transcript.message === 'object') {
+        patientData = transcript.message;
+    } else {
+        console.error("Invalid data format for patient data.");
+        return; // Handle the error gracefully
     }
-    return value || 0;
-  }
-  
+
+    // Proceed only if chartId and patientId match
+    if (this.chartId !== undefined && this.chartId === patientData.chartId && this.patientId && this.patientId === patientData.patientId) {
+        // Create a map for quick access to pdValues by toothNumber
+        const pdValueMap = new Map(this.pdValues.map(item => [item.toothNumber, item]));
+
+        for (const toothNumber in patientData.patient) {
+            if (patientData.patient.hasOwnProperty(toothNumber)) {
+                const tooth = patientData.patient[toothNumber];
+                const pdValue = pdValueMap.get(+toothNumber); // Get the corresponding pdValue
+
+                if (pdValue) {
+                    // Directly handle the conversion and assignment
+                    pdValue.distalBuccal = this.convertAndCleanValue(tooth.Distal_Buccal);
+                    pdValue.buccal = this.convertAndCleanValue(tooth.Buccal);
+                    pdValue.mesialBuccal = this.convertAndCleanValue(tooth.Mesial_Buccal);
+                    pdValue.distalLingual = this.convertAndCleanValue(tooth.Distal_Lingual);
+                    pdValue.lingual = this.convertAndCleanValue(tooth.Lingual);
+                    pdValue.mesialLingual = this.convertAndCleanValue(tooth.Mesial_Lingual);
+                    pdValue.distalFacial = this.convertAndCleanValue(tooth.Distal_Facial);
+                    pdValue.facial = this.convertAndCleanValue(tooth.Facial);
+                    pdValue.mesialFacial = this.convertAndCleanValue(tooth.Mesial_Facial);
+                    pdValue.distalPalatial = this.convertAndCleanValue(tooth.Distal_Palatal);
+                    pdValue.palatial = this.convertAndCleanValue(tooth.Palatal);
+                    pdValue.mesialPalatial = this.convertAndCleanValue(tooth.Mesial_Palatal);
+                }
+            }
+        }
+    }
+}
+
+// Helper function to remove "mm" and convert to number
+private convertAndCleanValue(value: string | number): number {
+    if (typeof value === 'string') {
+        // Remove "mm" and convert to number, defaulting to 0 if invalid
+        return parseFloat(value.replace('mm', '').trim()) || 0;
+    }
+    return value !== undefined && value !== null ? Number(value) : 0;
+}
 
 
   private updateToothData(toothNumber: number, data: string): void {
@@ -1092,49 +835,144 @@ if((this.chartId != undefined &&  this.chartId == patientData.chartId) && (this.
     this.route.navigate(['periodontal-chart-list'], { queryParams: { patientId: this.patientId } });
   }
 
-  private mediaRecorder!: MediaRecorder;
-  private audioChunks: Blob[] = [];
   public audioUrl: string | null = null;
 
 
-  // Start recording
-  startRecording(): void {    
-    this.isRecording = true;
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
-        this.mediaRecorder = new MediaRecorder(stream);
-        this.mediaRecorder.start();
 
-        this.mediaRecorder.ondataavailable = (event) => {
-          this.audioChunks.push(event.data);
-        };
-
-        this.mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });
-          this.audioUrl = URL.createObjectURL(audioBlob);
-          this.audioChunks = []; 
-          this.downloadAudio();// Reset the audio chunks for future recordings
-        };
-      })
-      .catch(error => console.error('Error accessing media devices.', error));
-  }
-
-  // Stop recording
   stopRecording(): void {
     this.isRecording = false;
     if (this.mediaRecorder) {
       this.mediaRecorder.stop();
     }
-  }
-
-  // Download the audio file
-  downloadAudio(): void {
-    if (this.audioUrl) {
-      const a = document.createElement('a');
-      a.href = this.audioUrl;
-      a.download = 'recorded-audio.mp3';
-      a.click();
+    if (this.mediaRecorder && this.mediaRecorder.stream) {
+      this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+      console.log("Microphone access has been released.");
     }
   }
+  
+
+
+async startListening(): Promise<void> {
+  try {
+    // Access the user's microphone
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    this.mediaRecorder = new MediaRecorder(stream);
+
+    // Initialize the Web Audio API for silence detection
+    this.audioContext = new AudioContext();
+    const source = this.audioContext.createMediaStreamSource(stream);
+    this.analyser = this.audioContext.createAnalyser();
+    this.analyser.fftSize = 512;
+    source.connect(this.analyser);
+    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+
+    // Set up MediaRecorder events
+    this.mediaRecorder.ondataavailable = (event: BlobEvent) => {
+      this.audioChunks.push(event.data);
+    };
+
+    this.mediaRecorder.onstart = () => {
+      console.log("Recording started...");
+      this.audioChunks = [];
+    };
+
+    this.mediaRecorder.onstop = async () => {
+      if (this.audioChunks.length > 0) {
+        const audioBlob = new Blob(this.audioChunks, { type: "audio/mp3" });
+        this.audioChunks = [];
+        await this.sendAudioForTranscription(audioBlob);
+      }
+    };
+
+    this.mediaRecorder.start();
+    this.isRecording = true;
+
+    // Start silence detection
+    this.detectSilence();
+
+    console.log("Listening started...");
+  } catch (error) {
+    console.error("Error accessing microphone:", error);
+  }
 }
+
+private detectSilence(): void {
+  if (!this.analyser || !this.dataArray) {
+    console.error("Analyser or data array is not initialized.");
+    return;
+  }
+
+  const checkSilence = () => {
+    this.analyser!.getByteFrequencyData(this.dataArray!);
+
+    // Calculate average volume
+    const averageVolume = this.dataArray!.reduce((sum, value) => sum + value, 0) / this.dataArray!.length;
+
+    if (averageVolume < 10) {
+      // Silence detected
+      if (!this.isSilent) {
+        this.isSilent = true;
+        this.startSilenceTimer();
+      }
+    } else {
+      // Activity detected
+      if (this.isSilent) {
+        this.isSilent = false;
+        clearTimeout(this.silenceTimeout);
+        console.log("User resumed speaking...");
+      }
+    }
+
+    // Continue monitoring
+    requestAnimationFrame(checkSilence);
+  };
+
+  checkSilence();
+}
+
+private startSilenceTimer(): void {
+  clearTimeout(this.silenceTimeout); // Clear any existing timer
+  console.log("Starting silence timer...");
+
+  this.silenceTimeout = setTimeout(() => {
+    if (this.isSilent && this.mediaRecorder?.state === "recording") {
+      console.log("Silence detected for 9 seconds, stopping the recording...");
+      this.mediaRecorder.stop();
+    }
+  }, 4000); // Silence threshold is 9 seconds
+}
+
+private async sendAudioForTranscription(audioBlob: Blob): Promise<void> {
+  const voiceRecognitionRequest: VoiceRecognitionRequestDto = {
+    audioFile: new File([audioBlob], "recorded-audio.mp3"),
+    patientId: this.patientId,
+    doctorId: this.doctorId,
+    chartId: this.chartId,
+    tenantId: this.tenantId,
+  };
+
+  try {
+    console.log("Sending audio for transcription...");
+    const transcriptionResult = await this.speechService.transcribeAudioFile(voiceRecognitionRequest).toPromise();
+    console.log("Transcription Result:", transcriptionResult);
+    this.transcript = this.transcript.concat(transcriptionResult);
+    this.processTranscript(transcriptionResult);
+
+    // Resume listening after sending the transcription
+    if (this.isRecording && this.mediaRecorder) {
+      this.mediaRecorder.start();
+      console.log("Resumed listening after transcription.");
+    }
+    
+  } catch (error) {
+    console.error("Error sending audio for transcription:", error);
+  }
+}
+
+
+}
+
+
+
+
 

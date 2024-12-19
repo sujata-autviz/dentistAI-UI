@@ -137,7 +137,10 @@ export class PatientsComponent {
               'Patient updated successfully'
             );
           },
-          (err) => {}
+          (err) => {
+            this.closeDialog();
+            this.notificationService.warningAlert(err.error.message);
+          }
         );
     } else {
       this.patientService.addPatient(this.selectedPatient).subscribe({
